@@ -1,0 +1,15 @@
+﻿@model List<GameTrade.Models.Game>
+
+<form method="post">
+
+    @foreach (var game in Model)
+    {
+        <div>
+        <input type="checkbox" name="GameIds" id="@game.GameID" value="@game.GameID" />
+        <label for="@game.GameID">@game.Title</label>
+        </div>
+    }
+
+    <input type="submit" value="Remove Selected Games" />
+
+</form>

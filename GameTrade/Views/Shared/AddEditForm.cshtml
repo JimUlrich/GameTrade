@@ -1,0 +1,29 @@
+﻿@model GameTrade.ViewModels.AddGameViewModel
+
+<div class="form-group">
+    <label asp-for="Title"></label>
+    <input class="form-control" asp-for="Title" />
+    <span asp-validation-for="Title"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Platform"></label>
+    <input class="form-control" asp-for="Platform" />
+    <span asp-validation-for="Platform"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Year"></label>
+    <input class="form-control" asp-for="Year" type="number" min="1970" max="2017" step="1" />
+    <span asp-validation-for="Year"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Condition"></label><br />
+    <select asp-for="Condition" asp-items="@Model.GameConditions"></select>
+</div>
+
+<div class="form-group">
+    <label asp-for="Value"></label>
+    <input class="form-control" asp-for="Value" />
+    <span asp-validation-for="Value"></span>
+</div>
+

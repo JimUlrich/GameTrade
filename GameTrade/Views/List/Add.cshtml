@@ -1,0 +1,13 @@
+﻿@model GameTrade.ViewModels.AddGameViewModel
+
+<h1>Add Game</h1>
+
+<form asp-controller="List" asp-action="Add" method="post">
+    
+    @{Html.RenderPartial("AddEditForm");}
+
+    <input type="submit" value="Add Game"/>
+    
+    </form>
+
+
