@@ -122,7 +122,8 @@ namespace GameTrade.Controllers
         public IActionResult Game(int ID)
         {
             Game gameToDisplay = context.Games.Single(g => g.GameID == ID);
-            return View(gameToDisplay);
+            GameViewModel gameViewModel = new GameViewModel(gameToDisplay);
+            return View(gameViewModel);
         }
     }
 

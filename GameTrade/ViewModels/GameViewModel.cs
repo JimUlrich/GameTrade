@@ -30,5 +30,18 @@ namespace GameTrade.ViewModels
         public string GamesdbID { get; set; }
 
         public string Description { get; set; }
+
+        public Game Game { get; set; }
+
+        public GameViewModel() { }
+
+        public GameViewModel(Game game)
+        {
+            Game = game;
+        }
+
+
     }
 }
+
+//TODO: create a method to fill form variables

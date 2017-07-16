@@ -1,0 +1,37 @@
+﻿@model GameTrade.ViewModels.GameViewModel
+
+<h1>@Model.Game.Title</h1>
+
+<table class="table">
+
+    <tr>
+        
+        <th>Platform</th>
+        <th>Year</th>
+        <th>GameCondition</th>
+        <th>Value</th>
+
+    </tr>
+
+    
+    <tr>
+            
+       <td>@Model.Game.System</td>
+       <td>@Model.Game.Year</td>
+       <td>@Model.Game.GameCondition</td>
+       <td>$@Model.Game.Value</td>
+    
+    
+
+    
+
+        <td><a asp-controller="List" asp-action="Edit" asp-route-id="@Model.Game.GameID">Edit</a></td>
+    </tr>  
+    
+</table>
+
+<div>
+    @Model.Game.Description
+</div>
+
+@{//TODO: Use GamesDB info to populate page
