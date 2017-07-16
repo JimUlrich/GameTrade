@@ -106,7 +106,7 @@ namespace GameTrade.Controllers
         [HttpPost]
         public IActionResult Edit(EditGameViewModel editGameViewModel)
         {
-            Game gameToEdit = context.Games.Single(c => c.GameID == editGameViewModel.GameID);
+            Game gameToEdit = context.Games.Single(g => g.GameID == editGameViewModel.GameID);
 
             if (ModelState.IsValid)
             {
@@ -118,7 +118,14 @@ namespace GameTrade.Controllers
 
             return View(editGameViewModel);
         }
+
+        public IActionResult Game(int ID)
+        {
+            Game gameToDisplay = context.Games.Single(g => g.GameID == ID);
+            return View(gameToDisplay);
+        }
     }
+
 
 
 }
@@ -127,8 +134,7 @@ namespace GameTrade.Controllers
         //TODO: is it better to break things up in to separate databases or to make more than 1 entry for every game?
         // should users be able to enter their own systems or select from a list?
        
-        // populate database beforehand - just create, migrate, fill it up and then compile
-       // HttpWebRequest  //save the ID in a database
+      
         // use gamesdb naming conventions
         //Sort by users preference
         //display single game

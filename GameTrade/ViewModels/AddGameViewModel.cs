@@ -11,31 +11,9 @@ using System.Xml.Linq;
 
 namespace GameTrade.ViewModels
 {
-    public class AddGameViewModel
+    public class AddGameViewModel : GameViewModel
     {
         internal List<string> conditions = new List<string> { "Mint", "Near Mint", "Excellent", "Good", "Fair", "Poor" };
-
-        [Required]
-        public string Title { get; set; }
-
-        [Required]
-        public string Platform { get; set; }
-
-        [Required]
-        public string Year { get; set; }
-
-        [Required]
-        [Range(0.01, 1000)]
-        public decimal Value { get; set; }
-
-        [Required]
-        public string Condition { get; set; }
-
-        public string GameID { get; set; }
-
-        public string GamesdbID { get; set; }
-
-        public string Description { get; set; }
 
         public List<SelectListItem> GameConditions { get; set; }
 
@@ -98,7 +76,10 @@ namespace GameTrade.ViewModels
             return gamesdbXdoc;
         }
 
+        
+
         //TODO: make a regex for the Year property
+        //TODO: remove query from constructor
 
 
 
