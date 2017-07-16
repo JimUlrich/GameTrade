@@ -21,6 +21,10 @@ namespace GameTrade.Controllers
 
         public IActionResult Index()
         {
+      //      IList<ApplicationUser> users = context.Users.ToList();
+        //    return View(users);
+        
+        
             IList<Game> games = context.Games.ToList();
             return View(games);
         }
