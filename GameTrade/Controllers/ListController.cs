@@ -4,6 +4,8 @@ using GameTrade.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Xml.Linq;
 
 namespace GameTrade.Controllers
 {
@@ -23,16 +25,23 @@ namespace GameTrade.Controllers
             return View(games);
         }
 
-        public IActionResult Add()
-        {
-            AddGameViewModel addGameViewModel = new AddGameViewModel();
-            return View(addGameViewModel);
-        }
+       // public IActionResult Add()
+       // {
+         //   AddGameViewModel addGameViewModel = new AddGameViewModel();
+           // return View(addGameViewModel);
+      //  }
 
-        [HttpPost]
-        public IActionResult Add(AddGameViewModel addGameViewModel)
+ //       [HttpPost]
+        public IActionResult Add(AddGameViewModel addGameViewModel) 
         {
-            if (ModelState.IsValid)
+            if (addGameViewModel.Title == null)
+            {
+                addGameViewModel = new AddGameViewModel();
+                return View(addGameViewModel);
+            }
+
+
+            else if (ModelState.IsValid)
             {
                 Game newGame = new Game(addGameViewModel);
 
@@ -42,8 +51,28 @@ namespace GameTrade.Controllers
                 return Redirect("/List");
             }
 
+
             return View(addGameViewModel);
         }
+
+        public IActionResult LookupByTitle()
+        {
+            LookupByTitleViewModel lookupByTitleViewModel = new LookupByTitleViewModel();
+            return View(lookupByTitleViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult LookupByTitle(LookupByTitleViewModel lookupByTitleViewModel)
+        {
+            
+            
+                string title = lookupByTitleViewModel.Title;
+                AddGameViewModel addGameViewModel = new AddGameViewModel(title);
+
+                return RedirectToAction("Add", addGameViewModel);
+            
+        }
+
 
         public IActionResult Remove()
         {
@@ -102,6 +131,9 @@ namespace GameTrade.Controllers
        // HttpWebRequest  //save the ID in a database
         // use gamesdb naming conventions
         //Sort by users preference
+        //display single game
+        //fix null Add action
+
 
 
     

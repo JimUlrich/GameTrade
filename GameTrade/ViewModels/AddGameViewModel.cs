@@ -1,10 +1,13 @@
 ﻿using GameTrade.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace GameTrade.ViewModels
 {
@@ -19,15 +22,18 @@ namespace GameTrade.ViewModels
         public string Platform { get; set; }
 
         [Required]
-        [Range(1970,2017)]
-        public int Year { get; set; }
+        public string Year { get; set; }
 
         [Required]
-        [Range(0, 1000)]
+        [Range(0.01, 1000)]
         public decimal Value { get; set; }
 
         [Required]
         public string Condition { get; set; }
+
+        public string GameID { get; set; }
+
+        public string GamesdbID { get; set; }
 
         public string Description { get; set; }
 
@@ -54,10 +60,49 @@ namespace GameTrade.ViewModels
             return GameConditions;
         }
 
+        
         public AddGameViewModel()
         {
             GameConditions = BuildConditions();
         }
+
+        public AddGameViewModel(String title)
+        {
+            XDocument xDoc = GetGamesDBInfo(title);
+
+            var query = from g in xDoc.Descendants("Game")
+                        where g.Element("GameTitle").Value.ToLower() == title.ToLower()
+                        select new
+                        {
+                            Platform = g.Element("Platform").Value,
+                            Year = g.Element("ReleaseDate").Value,
+                            GameID = g.Element("id").Value
+                        };
+            
+            foreach (var item in query)
+            {
+                Platform = item.Platform;
+                Year = item.Year;
+                GameID = item.GameID;
+            }
+
+            Title = title;
+            GameConditions = BuildConditions();
+        }
+
+        private XDocument GetGamesDBInfo(String title)
+        {
+            WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/GetGamesList.php?name=" + title);
+            WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
+            XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
+            return gamesdbXdoc;
+        }
+
+        //TODO: make a regex for the Year property
+
+
+
+
 
 
     }

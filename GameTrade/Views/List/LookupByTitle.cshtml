@@ -1,0 +1,13 @@
+﻿@model GameTrade.ViewModels.LookupByTitleViewModel
+
+<form asp-controller="List" asp-action="LookupByTitle" method="post">
+
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input class="form-control" asp-for="Title" />
+        <span asp-validation-for="Title"></span>
+    </div>
+
+    
+    <input type="submit" value="Search" />
+</form>
