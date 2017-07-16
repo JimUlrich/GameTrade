@@ -1,13 +1,9 @@
-﻿using System;
+﻿using GameTrade.Data;
+using GameTrade.Models;
+using GameTrade.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using GameTrade.Data;
-using GameTrade.Models;
-using Microsoft.EntityFrameworkCore;
-using GameTrade.ViewModels;
-using System.Net;
 
 namespace GameTrade.Controllers
 {
@@ -38,17 +34,7 @@ namespace GameTrade.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Condition newCondition = context.Conditions.Single(c => c.ID == addGameViewModel.Condition);
-
-                Game newGame = new Game
-                {
-                    Title = addGameViewModel.Title,
-                    System = addGameViewModel.Platform,
-                    Value = addGameViewModel.Value,
-                    Year = addGameViewModel.Year,
-                    Description = addGameViewModel.Description,
-                    GameCondition = addGameViewModel.Condition
-                };
+                Game newGame = new Game(addGameViewModel);
 
                 context.Games.Add(newGame);
                 context.SaveChanges();
@@ -88,10 +74,24 @@ namespace GameTrade.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult Edit(EditGameViewModel editGameViewModel)
+        {
+            Game gameToEdit = context.Games.Single(c => c.GameID == editGameViewModel.GameID);
 
+            if (ModelState.IsValid)
+            {
+                gameToEdit.Edit(editGameViewModel);
+                context.SaveChanges();
 
+                return Redirect("/List");
+            }
 
+            return View(editGameViewModel);
+        }
     }
+
+
 }
     
 

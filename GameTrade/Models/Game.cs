@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameTrade.ViewModels;
 
 namespace GameTrade.Models
 {
@@ -20,6 +21,28 @@ namespace GameTrade.Models
 
 
 //TODO: add tradeable designation and migrate
+
+        public Game(AddGameViewModel viewModel)
+        {
+            Title = viewModel.Title;
+            System = viewModel.Platform;
+            Value = viewModel.Value;
+            Year = viewModel.Year;
+            Description = viewModel.Description;
+            GameCondition = viewModel.Condition;
+        }
+
+        public Game() { }
+
+        public void Edit(EditGameViewModel viewModel)
+        {
+            Title = viewModel.Title;
+            System = viewModel.Platform;
+            Value = viewModel.Value;
+            Year = viewModel.Year;
+            Description = viewModel.Description;
+            GameCondition = viewModel.Condition;
+        }
 
 
     }
