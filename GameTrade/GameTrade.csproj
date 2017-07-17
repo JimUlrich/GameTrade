@@ -34,10 +34,6 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\ListViewModels\" />
-    <Folder Include="Views\MainPage\" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Update="Views\Home\Index.cshtml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

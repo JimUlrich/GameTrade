@@ -18,9 +18,11 @@ namespace GameTrade.Models
         public string GameCondition { get; set; }
         public int GameID { get; set; }
         public string GamesdbID { get; set; }
+        
 
 
-//TODO: add tradeable designation and migrate
+
+        //TODO: add tradeable designation and migrate
 
         public Game(AddGameViewModel viewModel)
         {

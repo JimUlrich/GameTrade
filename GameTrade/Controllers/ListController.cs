@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+
 
 namespace GameTrade.Controllers
 {
@@ -21,10 +24,9 @@ namespace GameTrade.Controllers
 
         public IActionResult Index()
         {
-      //      IList<ApplicationUser> users = context.Users.ToList();
-        //    return View(users);
-        
-        
+
+            string userId = Models.Extensions.GetUserID(User);
+
             IList<Game> games = context.Games.ToList();
             return View(games);
         }
@@ -141,9 +143,10 @@ namespace GameTrade.Controllers
        
       
         // use gamesdb naming conventions
-        //Sort by users preference
-        //display single game
+        //Sort by users preference/bst
+        
         //fix null Add action
+        //find out the difference between claimsprincipal and claimsidentity
 
 
 

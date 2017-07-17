@@ -12,7 +12,8 @@ namespace GameTrade.Data
     {
         public DbSet<Game> Games { get; set; }
         
-        
+
+
 
         public GameTradeDbContext(DbContextOptions<GameTradeDbContext> options)
             : base(options)
