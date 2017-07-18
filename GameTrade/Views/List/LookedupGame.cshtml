@@ -2,7 +2,21 @@
 
 <form asp-controller="List" method="post">
 
-    @{ Html.RenderPartial("AddEditForm");}
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input class="form-control" asp-for="Title" />
+        
+    </div>
+    <div class="form-group">
+        <label asp-for="Platform"></label>
+        <input class="form-control" asp-for="Platform" />
+        
+    </div>
+    <div class="form-group">
+        <label asp-for="Year"></label>
+        <input class="form-control" asp-for="Year" />
+       
+    </div>
 
     <input type="hidden" name="UserId" value="@Model.UserId" />
     <input type="submit" value="Add Game" asp-action="Add" />

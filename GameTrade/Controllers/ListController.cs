@@ -40,14 +40,7 @@ namespace GameTrade.Controllers
         [HttpPost]
         public IActionResult Add(AddGameViewModel addGameViewModel) 
         {
-            if (addGameViewModel.Title == null)
-            {
-                string userId = Models.Extensions.GetUserID(User);
-                addGameViewModel = new AddGameViewModel();
-                return View(addGameViewModel);
-            }
-
-            else if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 Game newGame = new Game(addGameViewModel);
 
@@ -82,12 +75,6 @@ namespace GameTrade.Controllers
             
         }
 
-     //   public IActionResult AddLookedupGame(LookupByTitleViewModel lookupByTitleViewModel)
-      //  {
-       //     AddGameViewModel addGameViewModel = new AddGameViewModel(lookupByTitleViewModel);
-        //    return RedirectToAction("Add", addGameViewModel);
-       // }
-
         public IActionResult Remove()
         {
             IList<Game> games = context.Games.ToList();
@@ -105,7 +92,7 @@ namespace GameTrade.Controllers
 
             context.SaveChanges();
 
-            return Redirect("/");
+            return Redirect("/List");
         }
 
         public IActionResult Edit(int ID)
@@ -154,7 +141,7 @@ namespace GameTrade.Controllers
         //Sort by users preference/bst
         
         //fix null Add action
-        //find out the difference between claimsprincipal and claimsidentity
+        
 
 
 

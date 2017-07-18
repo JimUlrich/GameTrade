@@ -17,26 +17,7 @@ namespace GameTrade.ViewModels
         internal List<string> conditions = new List<string> { "Mint", "Near Mint", "Excellent", "Good", "Fair", "Poor" };
 
         public List<SelectListItem> GameConditions { get; set; }
-
-        internal List<SelectListItem> BuildConditions()
-        {
-            int i = 0;
-          
-            List<SelectListItem> GameConditions = new List<SelectListItem>();
-
-            foreach (string condition in conditions)
-            {
-                GameConditions.Add(new SelectListItem
-                {
-                    Text = conditions[i],
-                    Value = conditions[i]
-                });
-                i++;              
-            }
-            return GameConditions;
-        }
-
-        
+    
         public AddGameViewModel()
         {
             GameConditions = BuildConditions();
@@ -57,44 +38,31 @@ namespace GameTrade.ViewModels
             GameConditions = BuildConditions();
         }
 
-        public AddGameViewModel(string title, string userId )
+        internal List<SelectListItem> BuildConditions()
         {
-            XDocument xDoc = GetGamesDBInfo(title);
+            int i = 0;
 
-            var query = from g in xDoc.Descendants("Game")
-                        where g.Element("GameTitle").Value.ToLower() == title.ToLower()
-                        select new
-                        {
-                            Platform = g.Element("Platform").Value,
-                            Year = g.Element("ReleaseDate").Value,
-                            GameID = g.Element("id").Value
-                        };
-            
-            foreach (var item in query)
+            List<SelectListItem> GameConditions = new List<SelectListItem>();
+
+            foreach (string condition in conditions)
             {
-                Platform = item.Platform;
-                Year = item.Year;
-                GameID = item.GameID;
+                GameConditions.Add(new SelectListItem
+                {
+                    Text = conditions[i],
+                    Value = conditions[i]
+                });
+                i++;
             }
-
-            UserId = userId;
-            Title = title;
-            GameConditions = BuildConditions();
+            return GameConditions;
         }
 
-        private XDocument GetGamesDBInfo(String title)
-        {
-            WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/GetGamesList.php?name=" + title);
-            WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
-            XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
-            return gamesdbXdoc;
-        }
 
-        
+
+
 
         //TODO: make a regex for the Year property
         //TODO: remove query from constructor
-        //TODO: move query to lookup action
+
 
 
 
