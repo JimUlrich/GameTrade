@@ -1,0 +1,10 @@
+﻿@model GameTrade.ViewModels.LookedupGameViewModel
+
+<form asp-controller="List" method="post">
+
+    @{ Html.RenderPartial("AddEditForm");}
+
+    <input type="hidden" name="UserId" value="@Model.UserId" />
+    <input type="submit" value="Add Game" asp-action="Add" />
+
+</form>

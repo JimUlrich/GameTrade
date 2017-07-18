@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -30,11 +31,8 @@ namespace GameTrade.ViewModels
                     Text = conditions[i],
                     Value = conditions[i]
                 });
-
-                i++;
-                   
+                i++;              
             }
-
             return GameConditions;
         }
 
@@ -44,7 +42,22 @@ namespace GameTrade.ViewModels
             GameConditions = BuildConditions();
         }
 
-        public AddGameViewModel(String title)
+        public AddGameViewModel(ClaimsPrincipal user)
+        {
+            UserId = Models.Extensions.GetUserID(user);
+            GameConditions = BuildConditions();
+        }
+
+        public AddGameViewModel(LookedupGameViewModel viewmodel)
+        {
+            Title = viewmodel.Title;
+            Platform = viewmodel.Platform;
+            Year = viewmodel.Year;
+            UserId = viewmodel.UserId;
+            GameConditions = BuildConditions();
+        }
+
+        public AddGameViewModel(string title, string userId )
         {
             XDocument xDoc = GetGamesDBInfo(title);
 
@@ -64,6 +77,7 @@ namespace GameTrade.ViewModels
                 GameID = item.GameID;
             }
 
+            UserId = userId;
             Title = title;
             GameConditions = BuildConditions();
         }
@@ -80,7 +94,7 @@ namespace GameTrade.ViewModels
 
         //TODO: make a regex for the Year property
         //TODO: remove query from constructor
-
+        //TODO: move query to lookup action
 
 
 

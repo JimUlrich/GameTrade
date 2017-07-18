@@ -1,6 +1,6 @@
 ﻿@model GameTrade.ViewModels.LookupByTitleViewModel
 
-<form asp-controller="List" asp-action="LookupByTitle" method="post">
+<form asp-controller="List" method="post">
 
     <div class="form-group">
         <label asp-for="Title"></label>
@@ -8,6 +8,8 @@
         <span asp-validation-for="Title"></span>
     </div>
 
+    <input type="hidden" name="UserId" value="@Model.UserId"/> 
     
-    <input type="submit" value="Search" />
+    <input type="submit" value="Search" asp-action="LookedupGame"/>
+    <input type="submit" value="Add Game" asp-action="AddLookedupGame" />
 </form>

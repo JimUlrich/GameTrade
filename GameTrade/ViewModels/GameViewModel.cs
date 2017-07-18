@@ -33,6 +33,8 @@ namespace GameTrade.ViewModels
 
         public Game Game { get; set; }
 
+        public string UserId { get; set; }
+
         public GameViewModel() { }
 
         public GameViewModel(Game game)

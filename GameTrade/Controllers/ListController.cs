@@ -31,21 +31,21 @@ namespace GameTrade.Controllers
             return View(games);
         }
 
-       // public IActionResult Add()
-       // {
-         //   AddGameViewModel addGameViewModel = new AddGameViewModel();
-           // return View(addGameViewModel);
-      //  }
+        public IActionResult Add()
+        {
+           AddGameViewModel addGameViewModel = new AddGameViewModel(User);
+           return View(addGameViewModel);
+        }
 
- //       [HttpPost]
+        [HttpPost]
         public IActionResult Add(AddGameViewModel addGameViewModel) 
         {
             if (addGameViewModel.Title == null)
             {
+                string userId = Models.Extensions.GetUserID(User);
                 addGameViewModel = new AddGameViewModel();
                 return View(addGameViewModel);
             }
-
 
             else if (ModelState.IsValid)
             {
@@ -57,28 +57,36 @@ namespace GameTrade.Controllers
                 return Redirect("/List");
             }
 
+            return View(addGameViewModel);
+        }
 
+        public IActionResult Add(LookedupGameViewModel lookedupGameViewModel)
+        {
+            AddGameViewModel addGameViewModel = new AddGameViewModel(lookedupGameViewModel);
             return View(addGameViewModel);
         }
 
         public IActionResult LookupByTitle()
         {
-            LookupByTitleViewModel lookupByTitleViewModel = new LookupByTitleViewModel();
+            LookupByTitleViewModel lookupByTitleViewModel = new LookupByTitleViewModel(User);
             return View(lookupByTitleViewModel);
         }
 
         [HttpPost]
-        public IActionResult LookupByTitle(LookupByTitleViewModel lookupByTitleViewModel)
+        public IActionResult LookedupGame(LookupByTitleViewModel lookupByTitleViewModel)
         {
-            
-            
-                string title = lookupByTitleViewModel.Title;
-                AddGameViewModel addGameViewModel = new AddGameViewModel(title);
-
-                return RedirectToAction("Add", addGameViewModel);
+            string title = lookupByTitleViewModel.Title;
+            string userId = lookupByTitleViewModel.UserId;
+            LookedupGameViewModel lookedupGameViewModel = new LookedupGameViewModel(title, userId);
+            return View(lookedupGameViewModel);
             
         }
 
+     //   public IActionResult AddLookedupGame(LookupByTitleViewModel lookupByTitleViewModel)
+      //  {
+       //     AddGameViewModel addGameViewModel = new AddGameViewModel(lookupByTitleViewModel);
+        //    return RedirectToAction("Add", addGameViewModel);
+       // }
 
         public IActionResult Remove()
         {
@@ -91,7 +99,7 @@ namespace GameTrade.Controllers
         {
             foreach (int gameId in gameIds)
             {
-                Game thegame = context.Games.Single(g => g.GameID == gameId);
+                Game thegame = context.Games.Single(g => g.GameId == gameId);
                 context.Games.Remove(thegame);
             }
 
@@ -102,7 +110,7 @@ namespace GameTrade.Controllers
 
         public IActionResult Edit(int ID)
         {
-            Game gameToEdit = context.Games.Single(c => c.GameID == ID);
+            Game gameToEdit = context.Games.Single(c => c.GameId == ID);
             EditGameViewModel editGameViewModel = new EditGameViewModel(gameToEdit);
 
             return View(editGameViewModel);
@@ -112,7 +120,7 @@ namespace GameTrade.Controllers
         [HttpPost]
         public IActionResult Edit(EditGameViewModel editGameViewModel)
         {
-            Game gameToEdit = context.Games.Single(g => g.GameID == editGameViewModel.GameID);
+            Game gameToEdit = context.Games.Single(g => g.GameId == editGameViewModel.GameID);
 
             if (ModelState.IsValid)
             {
@@ -127,7 +135,7 @@ namespace GameTrade.Controllers
 
         public IActionResult Game(int ID)
         {
-            Game gameToDisplay = context.Games.Single(g => g.GameID == ID);
+            Game gameToDisplay = context.Games.Single(g => g.GameId == ID);
             GameViewModel gameViewModel = new GameViewModel(gameToDisplay);
             return View(gameViewModel);
         }

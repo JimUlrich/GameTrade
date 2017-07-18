@@ -8,9 +8,10 @@ using GameTrade.Data;
 namespace GameTrade.Data.Migrations
 {
     [DbContext(typeof(GameTradeDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170717111005_addeduserid")]
+    partial class addeduserid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -68,7 +69,7 @@ namespace GameTrade.Data.Migrations
 
             modelBuilder.Entity("GameTrade.Models.Game", b =>
                 {
-                    b.Property<int>("GameId")
+                    b.Property<int>("GameID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description");
@@ -81,13 +82,13 @@ namespace GameTrade.Data.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserID");
 
                     b.Property<decimal>("Value");
 
                     b.Property<string>("Year");
 
-                    b.HasKey("GameId");
+                    b.HasKey("GameID");
 
                     b.ToTable("Games");
                 });

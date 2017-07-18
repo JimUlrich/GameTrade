@@ -16,9 +16,12 @@ namespace GameTrade.Models
         public decimal Value { get; set; }
         public string Description { get; set; }
         public string GameCondition { get; set; }
-        public int GameID { get; set; }
+        public int GameId { get; set; }
         public string GamesdbID { get; set; }
+        public string UserId { get; set; }
         
+
+
 
 
 
@@ -32,6 +35,7 @@ namespace GameTrade.Models
             Year = viewModel.Year;
             Description = viewModel.Description;
             GameCondition = viewModel.Condition;
+            UserId = viewModel.UserId;
         }
 
         public Game() { }
