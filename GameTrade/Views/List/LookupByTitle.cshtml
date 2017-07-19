@@ -7,9 +7,18 @@
         <input class="form-control" asp-for="Title" />
         <span asp-validation-for="Title"></span>
     </div>
+    
+    @{if (Model.Games != null)
+        {
+
+    <div class="form-group">
+        <label asp-for="Condition"></label><br />
+        <select asp-for="Condition" asp-items="@Model.Games"></select>
+    </div>
+            } }
 
     <input type="hidden" name="UserId" value="@Model.UserId"/> 
     
-    <input type="submit" value="Search" asp-action="LookedupGame"/>
+    <input type="submit" value="Search" asp-action="LookupByTitle"/>
     
 </form>

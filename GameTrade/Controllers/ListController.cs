@@ -22,23 +22,28 @@ namespace GameTrade.Controllers
             context = dbContext;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string userId)
         {
+            IEnumerable<Game> query = from g in context.Games
+                        where g.UserId == userId
+                        select g;
 
-            string userId = Models.Extensions.GetUserID(User);
-
-            IList<Game> games = context.Games.ToList();
-            return View(games);
+            return View(query);
         }
+            
+
+   //         IList<Game> games = context.Games.ToList();
+     //       return View(games);
+        
 
         public IActionResult Add()
         {
-           AddGameViewModel addGameViewModel = new AddGameViewModel(User);
-           return View(addGameViewModel);
+                AddGameViewModel addGameViewModel = new AddGameViewModel(User);
+                return View(addGameViewModel);
         }
 
         [HttpPost]
-        public IActionResult Add(AddGameViewModel addGameViewModel) 
+        public IActionResult Add(AddGameViewModel addGameViewModel, LookedupGameViewModel lookedupGameViewModel) 
         {
             if (ModelState.IsValid)
             {
@@ -53,16 +58,18 @@ namespace GameTrade.Controllers
             return View(addGameViewModel);
         }
 
-        public IActionResult Add(LookedupGameViewModel lookedupGameViewModel)
-        {
-            AddGameViewModel addGameViewModel = new AddGameViewModel(lookedupGameViewModel);
-            return View(addGameViewModel);
-        }
-
         public IActionResult LookupByTitle()
         {
             LookupByTitleViewModel lookupByTitleViewModel = new LookupByTitleViewModel(User);
             return View(lookupByTitleViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult LookupByTitle(LookupByTitleViewModel lookupByTitleViewModel)
+        {       
+                
+                LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(lookupByTitleViewModel.Title);
+                return View(newLookupByTitleViewModel);
         }
 
         [HttpPost]
@@ -72,7 +79,6 @@ namespace GameTrade.Controllers
             string userId = lookupByTitleViewModel.UserId;
             LookedupGameViewModel lookedupGameViewModel = new LookedupGameViewModel(title, userId);
             return View(lookedupGameViewModel);
-            
         }
 
         public IActionResult Remove()
@@ -101,7 +107,6 @@ namespace GameTrade.Controllers
             EditGameViewModel editGameViewModel = new EditGameViewModel(gameToEdit);
 
             return View(editGameViewModel);
-
         }
 
         [HttpPost]
@@ -141,6 +146,7 @@ namespace GameTrade.Controllers
         //Sort by users preference/bst
         
         //fix null Add action
+        //Pass the ADD params in through get params in browser 
         
 
 

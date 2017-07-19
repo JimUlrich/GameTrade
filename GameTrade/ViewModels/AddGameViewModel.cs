@@ -25,6 +25,7 @@ namespace GameTrade.ViewModels
 
         public AddGameViewModel(ClaimsPrincipal user)
         {
+           
             UserId = Models.Extensions.GetUserID(user);
             GameConditions = BuildConditions();
         }
