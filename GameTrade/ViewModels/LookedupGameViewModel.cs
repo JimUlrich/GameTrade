@@ -11,39 +11,39 @@ namespace GameTrade.ViewModels
     {
         public LookedupGameViewModel() { }
 
-        public LookedupGameViewModel(string title, string userId)
+        public LookedupGameViewModel(LookupByTitleViewModel viewModel)
         {
-            XDocument xDoc = GetGamesDBInfo(title);
+            int id = viewModel.GameId;
+            List<string> gameData = new List<string>();
+            XDocument xDoc = GetGameDBInfoById(id);
+            string gameid = id.ToString();
 
             var query = from g in xDoc.Descendants("Game")
-                        where g.Element("GameTitle").Value.ToLower() == title.ToLower()
+                        where g.Element("id").Value == gameid
                         select new
                         {
-                            Platform = g.Element("Platform").Value,
-                            Year = g.Element("ReleaseDate").Value,
-                            GameID = g.Element("id").Value
+                            title = g.Element("GameTitle").Value,
+                            platform = g.Element("Platform").Value,
+                            year = g.Element("ReleaseDate").Value,
                         };
-
             foreach (var item in query)
             {
-                Platform = item.Platform;
-                Year = item.Year;
-                GameID = item.GameID;
+                Title = item.title;
+                Platform = item.platform;
+                Year = item.year;
             }
-
-            UserId = userId;
-            Title = title;
             GameConditions = BuildConditions();
         }
 
-        private XDocument GetGamesDBInfo(String title)
+        internal XDocument GetGameDBInfoById(int id)
         {
-            WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/GetGamesList.php?name=" + title);
+            WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/GetGame.php?id=" + id);
             WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
             XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
             return gamesdbXdoc;
         }
     }
-
-      
 }
+
+   
+          

@@ -12,13 +12,23 @@
         {
 
     <div class="form-group">
-        <label asp-for="Condition"></label><br />
-        <select asp-for="Condition" asp-items="@Model.Games"></select>
+        <label asp-for="GameId"></label><br />
+        <select asp-for="GameId" asp-items="@Model.Games"></select>
     </div>
-            } }
+        } }
 
     <input type="hidden" name="UserId" value="@Model.UserId"/> 
     
-    <input type="submit" value="Search" asp-action="LookupByTitle"/>
     
+    @{if (Model.Games == null)
+        {
+    <input type="submit" value="Search" asp-action="LookupByTitle"/>
+        } }
+
+@{if (Model.Games != null)
+    {
+        <input type="submit" value="Search Again" asp-action="LookupByTitle" />
+        <input type="submit" value="Add Game" asp-action="LookedupGame" />
+        }
+    }
 </form>

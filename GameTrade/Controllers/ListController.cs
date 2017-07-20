@@ -43,7 +43,7 @@ namespace GameTrade.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(AddGameViewModel addGameViewModel, LookedupGameViewModel lookedupGameViewModel) 
+        public IActionResult Add(AddGameViewModel addGameViewModel) 
         {
             if (ModelState.IsValid)
             {
@@ -55,7 +55,14 @@ namespace GameTrade.Controllers
                 return Redirect("/List");
             }
 
-            return View(addGameViewModel);
+         //  if (lookupByTitleViewModel.Title != null)
+         //   {
+           //     AddGameViewModel lookedUpGame = new AddGameViewModel(lookupByTitleViewModel.GameId);
+             //   return View(lookedUpGame);
+
+           // }
+
+           return View(addGameViewModel);
         }
 
         public IActionResult LookupByTitle()
@@ -75,9 +82,7 @@ namespace GameTrade.Controllers
         [HttpPost]
         public IActionResult LookedupGame(LookupByTitleViewModel lookupByTitleViewModel)
         {
-            string title = lookupByTitleViewModel.Title;
-            string userId = lookupByTitleViewModel.UserId;
-            LookedupGameViewModel lookedupGameViewModel = new LookedupGameViewModel(title, userId);
+            LookedupGameViewModel lookedupGameViewModel = new LookedupGameViewModel(lookupByTitleViewModel);
             return View(lookedupGameViewModel);
         }
 

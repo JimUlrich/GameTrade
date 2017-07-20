@@ -30,15 +30,6 @@ namespace GameTrade.ViewModels
             GameConditions = BuildConditions();
         }
 
-        public AddGameViewModel(LookedupGameViewModel viewmodel)
-        {
-            Title = viewmodel.Title;
-            Platform = viewmodel.Platform;
-            Year = viewmodel.Year;
-            UserId = viewmodel.UserId;
-            GameConditions = BuildConditions();
-        }
-
         internal List<SelectListItem> BuildConditions()
         {
             int i = 0;
@@ -56,6 +47,12 @@ namespace GameTrade.ViewModels
             }
             return GameConditions;
         }
+
+
+       
+
+       
+
 
 
 

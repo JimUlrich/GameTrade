@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -13,6 +14,9 @@ namespace GameTrade.ViewModels
     public class LookupByTitleViewModel : AddGameViewModel
     {
         public List<SelectListItem> Games { get; set; }
+
+        [Display(Name = "Please select a game")]
+        public int GameId { get; set; }
 
         public LookupByTitleViewModel() { }
 
@@ -27,7 +31,6 @@ namespace GameTrade.ViewModels
         public LookupByTitleViewModel(string title)
         {
             Games = GetGamesList(title);
-
         }
 
         public LookupByTitleViewModel(ClaimsPrincipal user) 
@@ -38,6 +41,9 @@ namespace GameTrade.ViewModels
         private XDocument GetGamesDBInfo(string title)
         {
             WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/GetGamesList.php?name=" + title);
+
+            //might be able to move this bit to avoid repetition
+
             WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
             XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
             return gamesdbXdoc;
@@ -74,7 +80,7 @@ namespace GameTrade.ViewModels
 
    
 
-    //TODO: create a temp object to hold games gotten from gamesdb and use them to populate a selectlistitem
+    
     //TODO: modify view to allow platofrm entry
 
 
