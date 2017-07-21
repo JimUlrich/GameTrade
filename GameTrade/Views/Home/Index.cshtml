@@ -2,16 +2,13 @@
 
 <h1>Welcome to GameTrade</h1>
 
-<h3>List of Users</h3>
-<h5>Click on a User to view their list</h5>
+<h3>Search by:</h3>
 
-<table class="table-bordered">
+<a href="/Search/ByUser">User</a><br />
+<a href="">Title</a><br />
+<a href="">Platform</a>
 
-    @foreach (var user in Model)
-
-    {
-        <tr>
-        <td><a href="/List?=@user.Id">@user.UserName</a></td>
-        </tr>
+<a href=""></a>
+        
     }
 </table>

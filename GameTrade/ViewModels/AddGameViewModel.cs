@@ -15,6 +15,7 @@ namespace GameTrade.ViewModels
     public class AddGameViewModel : GameViewModel
     {
         internal List<string> conditions = new List<string> { "Mint", "Near Mint", "Excellent", "Good", "Fair", "Poor" };
+        internal List<string> designations = new List<string> { "For Sale", "Wanted", "For Trade" };
 
         public List<SelectListItem> GameConditions { get; set; }
     

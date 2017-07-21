@@ -21,6 +21,7 @@ namespace GameTrade.Controllers
         {
             IList<ApplicationUser> users = context.Users.ToList();
             return View(users);
+           
         }
 
        //TODO: implement "search by" function 

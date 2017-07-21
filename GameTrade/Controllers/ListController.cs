@@ -4,6 +4,7 @@ using GameTrade.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Net;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Identity;
@@ -24,17 +25,18 @@ namespace GameTrade.Controllers
 
         public IActionResult Index(string userId)
         {
+            string checkUserId = Models.Extensions.GetUserID(User);
+            if (checkUserId == null)
+            {
+                return Redirect("Home");
+            }
+
             IEnumerable<Game> query = from g in context.Games
                         where g.UserId == userId
                         select g;
 
             return View(query);
         }
-            
-
-   //         IList<Game> games = context.Games.ToList();
-     //       return View(games);
-        
 
         public IActionResult Add()
         {
@@ -54,13 +56,6 @@ namespace GameTrade.Controllers
 
                 return Redirect("/List");
             }
-
-         //  if (lookupByTitleViewModel.Title != null)
-         //   {
-           //     AddGameViewModel lookedUpGame = new AddGameViewModel(lookupByTitleViewModel.GameId);
-             //   return View(lookedUpGame);
-
-           // }
 
            return View(addGameViewModel);
         }
@@ -150,8 +145,7 @@ namespace GameTrade.Controllers
         // use gamesdb naming conventions
         //Sort by users preference/bst
         
-        //fix null Add action
-        //Pass the ADD params in through get params in browser 
+       
         
 
 

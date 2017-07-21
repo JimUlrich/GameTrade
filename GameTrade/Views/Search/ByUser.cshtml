@@ -1,0 +1,14 @@
+﻿@model List<GameTrade.Models.ApplicationUser>
+
+<h1>Search by User</h1>
+<h5>Please click on a User to return their list of games</h5>
+<table>
+   
+@foreach (var user in Model)
+    {
+        <tr>
+            <td><a href="/List/?id=@user.Id">@user.UserName</a></td>
+        </tr>
+
+    }
+</table>
