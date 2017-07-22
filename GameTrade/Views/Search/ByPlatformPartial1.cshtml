@@ -1,0 +1,13 @@
+﻿@model GameTrade.ViewModels.SearchByPlatformViewModel
+
+<h1>Search By Platform</h1>
+<h3>Please select a platform to view all games for that platform</h3>
+
+<form asp-controller="Search" asp-action="ByPlatform" method="post">
+    <div class="form-group">
+        <label asp-for="Platform"></label><br />
+        <select asp-for="Platform" asp-items="@Model.Platforms"></select>
+    </div>
+
+    <input type="submit" value="Search" />
+</form>

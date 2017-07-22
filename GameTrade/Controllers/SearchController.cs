@@ -38,11 +38,11 @@ namespace GameTrade.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult ByTitle()
-        {
-            return View();
-        }
+     //   [HttpPost]
+     //   public IActionResult ByTitle()
+      //  {
+      //      return View();
+      //  }
 
         public IActionResult ByPlatform()
         {
@@ -52,6 +52,14 @@ namespace GameTrade.Controllers
 
             SearchByPlatformViewModel searchByPlatformViewModel = new SearchByPlatformViewModel(platforms);
             return View(searchByPlatformViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult ByPlatform(SearchByPlatformViewModel searchByPlatformViewModel)
+        {
+            IEnumerable<Game> games = context.Games.Where(g => g.System == searchByPlatformViewModel.Platform);
+            SearchByPlatformViewModel viewModel = new SearchByPlatformViewModel(games);
+            return View(viewModel);
         }
 
 
