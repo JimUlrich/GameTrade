@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -11,7 +12,7 @@ namespace GameTrade.ViewModels
     {
         public LookedupGameViewModel() { }
 
-        public LookedupGameViewModel(LookupByTitleViewModel viewModel)
+        public LookedupGameViewModel(LookupByTitleViewModel viewModel, ClaimsPrincipal user)
         {
             int id = viewModel.GameId;
             List<string> gameData = new List<string>();
@@ -32,7 +33,8 @@ namespace GameTrade.ViewModels
                 Platform = item.platform;
                 Year = item.year;
             }
-            GameConditions = BuildConditions();
+            GameConditions = BuildSelectListItem(conditions);
+            UserId = Models.Extensions.GetUserID(user);
         }
 
         internal XDocument GetGameDBInfoById(int id)

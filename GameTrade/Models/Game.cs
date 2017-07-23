@@ -16,10 +16,12 @@ namespace GameTrade.Models
         public string GameCondition { get; set; }
         public string Designation { get; set; }
         public int GameId { get; set; }
+      //  public string Username { get; set; }
         public string UserId { get; set; }
         public string Genre { get; set; }
 
-        //TODO: add tradeable designation and migrate
+        //TODO: implement tradeable designation  and genre
+
 
         public Game(AddGameViewModel viewModel)
         {
@@ -30,6 +32,7 @@ namespace GameTrade.Models
             Description = viewModel.Description;
             GameCondition = viewModel.Condition;
             UserId = viewModel.UserId;
+            Designation = viewModel.Designation;
         }
 
         public Game() { }
@@ -42,6 +45,7 @@ namespace GameTrade.Models
             Year = viewModel.Year;
             Description = viewModel.Description;
             GameCondition = viewModel.Condition;
+            Designation = viewModel.Designation;
         }
 
 

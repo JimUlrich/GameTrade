@@ -1,5 +1,7 @@
 ﻿@model GameTrade.ViewModels.EditGameViewModel
-
+@{
+    ViewData["Title"] = "Edit Game";
+}
 <form asp-controller="List" asp-action="Edit" method="post">
 
     @{Html.RenderPartial("_AddEditFormPartial");

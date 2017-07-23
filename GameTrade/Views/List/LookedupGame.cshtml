@@ -1,5 +1,8 @@
 ﻿@model GameTrade.ViewModels.LookedupGameViewModel
 
+@{
+    ViewData["Title"] = "Look Up Game";
+}
 <form asp-controller="List" method="post">
 
     <div class="form-group">
@@ -19,8 +22,12 @@
     </div>
 
     <input type="hidden" name="UserId" value="@Model.UserId" />
-    <input type="submit" value="Search Again" asp-action="LookupByTitle" />
     <input type="submit" value="Add Game" asp-action="Add" />
+    <br />
+    <br />
+    <input type="submit" value="Search Again" asp-action="LookupByTitle" />
+    
+    
     
 
 

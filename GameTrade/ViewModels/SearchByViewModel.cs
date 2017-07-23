@@ -14,6 +14,8 @@ namespace GameTrade.ViewModels
         [Required]
         [Display(Name ="Please enter a title")]
         public string Title { get; set; }
+
+        [Display(Name = "")]
         public string Platform { get; set; }
         public IEnumerable<Game> Games { get; set; }
         public List<SelectListItem> Platforms { get; set; }

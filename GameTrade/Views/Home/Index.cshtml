@@ -1,12 +1,19 @@
 ﻿@model List<GameTrade.Models.ApplicationUser>
 
+@{
+    ViewData["Title"] = "Home";
+}
+
 <h1>Welcome to GameTrade</h1>
 
 <h3>Search by:</h3>
 
-<a href="/Search/ByUser">User</a><br />
-<a href="/Search/ByTitle">Title</a><br />
-<a href="/Search/ByPlatform">Platform</a>
+
+<div class="btn-group btn-group-justified">
+    <a href="/Search/ByUser" class="btn btn-default">User</a>
+    <a href="/Search/ByTitle" class="btn btn-default">Title</a>
+    <a href="/Search/ByPlatform" class="btn btn-default">Platform</a>
+</div>
 
 
         

@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GameTrade.Controllers
 {
-    [Authorize]
+    
     public class ListController : Controller
 
     {
@@ -24,23 +24,24 @@ namespace GameTrade.Controllers
             context = dbContext;
         }
 
-        public IActionResult Index(string userId, string m)
+        [Authorize]
+        public IActionResult Index(string m)
         {
-            ViewBag.Message = m;
-
             IEnumerable<Game> query = from g in context.Games
-                        where g.UserId == userId
+                        where g.UserId == Models.Extensions.GetUserID(User)
                         select g;
 
             return View(query);
         }
 
+        [Authorize]
         public IActionResult Add()
         {
                 AddGameViewModel addGameViewModel = new AddGameViewModel(User);
                 return View(addGameViewModel);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Add(AddGameViewModel addGameViewModel) 
         {
@@ -51,18 +52,20 @@ namespace GameTrade.Controllers
                 context.Games.Add(newGame);
                 context.SaveChanges();
 
-                return RedirectToAction("/List?m=Game%successfully%added");
+                return Redirect("/List?m=Game Successfully Added");
             }
 
            return View(addGameViewModel);
         }
 
+        [Authorize]
         public IActionResult LookupByTitle()
         {
             LookupByTitleViewModel lookupByTitleViewModel = new LookupByTitleViewModel(User);
             return View(lookupByTitleViewModel);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult LookupByTitle(LookupByTitleViewModel lookupByTitleViewModel)
         {       
@@ -71,19 +74,22 @@ namespace GameTrade.Controllers
                 return View(newLookupByTitleViewModel);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult LookedupGame(LookupByTitleViewModel lookupByTitleViewModel)
         {
-            LookedupGameViewModel lookedupGameViewModel = new LookedupGameViewModel(lookupByTitleViewModel);
+            LookedupGameViewModel lookedupGameViewModel = new LookedupGameViewModel(lookupByTitleViewModel, User);
             return View(lookedupGameViewModel);
         }
 
+        [Authorize]
         public IActionResult Remove()
         {
             IList<Game> games = context.Games.ToList();
             return View(games);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Remove(int[] gameIds)
         {
@@ -98,6 +104,7 @@ namespace GameTrade.Controllers
             return Redirect("/List");
         }
 
+        [Authorize]
         public IActionResult Edit(int ID)
         {
             Game gameToEdit = context.Games.Single(c => c.GameId == ID);
@@ -106,6 +113,7 @@ namespace GameTrade.Controllers
             return View(editGameViewModel);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Edit(EditGameViewModel editGameViewModel)
         {
@@ -122,11 +130,19 @@ namespace GameTrade.Controllers
             return View(editGameViewModel);
         }
 
-        public IActionResult Game(int ID)
+        public IActionResult Game(int id)
         {
-            Game gameToDisplay = context.Games.Single(g => g.GameId == ID);
+            Game gameToDisplay = context.Games.Single(g => g.GameId == id);
             GameViewModel gameViewModel = new GameViewModel(gameToDisplay);
             return View(gameViewModel);
+        }
+
+        public IActionResult UserList(string userId, string sort)
+        {
+            var sortingVariable = sort;
+            var query = context.Games.Where(g => g.UserId == userId);
+            var sortedQuery = query.OrderBy(g => g.sortingVariable);
+            return View(query);
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿@model GameTrade.ViewModels.GameViewModel
 
+
 <h1>@Model.Game.Title</h1>
 
 <table class="table">
@@ -24,8 +25,15 @@
     
 
     
+        @if (User.Identity.IsAuthenticated)
+        {
+            if (GameTrade.Models.Extensions.GetUserID(User) == Model.Game.UserId)
+            {
+                <td><a asp-controller="List" asp-action="Edit" asp-route-id="@Model.Game.GameId">Edit</a></td>
+            }
 
-        <td><a asp-controller="List" asp-action="Edit" asp-route-id="@Model.Game.GameId">Edit</a></td>
+        }
+        
     </tr>  
     
 </table>

@@ -1,5 +1,9 @@
 ﻿@model GameTrade.ViewModels.LookupByTitleViewModel
 
+@{
+    ViewData["Title"] = "Look Up Game";
+}
+<br>
 <form asp-controller="List" method="post">
 
     <div class="form-group">
@@ -10,11 +14,14 @@
     
     @{if (Model.Games != null)
         {
-
+    <input type="submit" class="btn btn-success" value="Search Again" asp-action="LookupByTitle" />
+    <br>
+    <br >
     <div class="form-group">
         <label asp-for="GameId"></label><br />
         <select asp-for="GameId" asp-items="@Model.Games"></select>
     </div>
+
         } }
 
     <input type="hidden" name="UserId" value="@Model.UserId"/> 
@@ -22,13 +29,13 @@
     
     @{if (Model.Games == null)
         {
-    <input type="submit" value="Search" asp-action="LookupByTitle"/>
+    <input type="submit" class="btn btn-success" value="Search" asp-action="LookupByTitle"/>
         } }
 
 @{if (Model.Games != null)
     {
-        <input type="submit" value="Search Again" asp-action="LookupByTitle" />
-        <input type="submit" value="Add Game" asp-action="LookedupGame" />
+        
+        <input type="submit" class="btn btn-success" value="Select Game" asp-action="LookedupGame" />
         }
     }
 </form>

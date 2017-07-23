@@ -1,8 +1,11 @@
 ﻿@model IEnumerable<GameTrade.Models.Game>
 
-<h1>@ViewBag.Title</h1>
+@{
+    ViewData["Title"] = "My List";
+}
+<h1>@ViewData["Title"]</h1>
 
-<table class="table">
+<table class="table table-striped table-hover">
 
     <tr>
         <th>Title</th>
