@@ -32,17 +32,40 @@ namespace GameTrade.Controllers
             IList<ApplicationUser> users = context.Users.ToList();
             return View(users);
         }
-
+      
         public IActionResult ByTitle()
         {
-            return View();
+            SearchByViewModel searchByViewModel = new SearchByViewModel();
+            return View(searchByViewModel);
         }
 
-     //   [HttpPost]
-     //   public IActionResult ByTitle()
-      //  {
-      //      return View();
-      //  }
+        [HttpPost]
+        public IActionResult ByTitle(SearchByViewModel searchByViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                IEnumerable<Game> games = context.Games.Where(g => g.Title == searchByViewModel.Title);
+                List<string> gameTitles = new List<string>();
+         
+                foreach (var game in games)
+                {
+                    gameTitles.Add(game.Title);
+                }
+
+                if (gameTitles.Contains(searchByViewModel.Title))
+                {
+                    SearchByViewModel viewModel = new SearchByViewModel(games);
+                    return View(viewModel);
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Title not found";
+                    return View(searchByViewModel);
+                }
+            }
+
+            return View(searchByViewModel);
+        }
 
         public IActionResult ByPlatform()
         {
@@ -50,15 +73,15 @@ namespace GameTrade.Controllers
                 from p in context.Games
                 select p.System;
 
-            SearchByPlatformViewModel searchByPlatformViewModel = new SearchByPlatformViewModel(platforms);
-            return View(searchByPlatformViewModel);
+            SearchByViewModel searchByViewModel = new SearchByViewModel(platforms);
+            return View(searchByViewModel);
         }
 
         [HttpPost]
-        public IActionResult ByPlatform(SearchByPlatformViewModel searchByPlatformViewModel)
+        public IActionResult ByPlatform(SearchByViewModel searchByViewModel)
         {
-            IEnumerable<Game> games = context.Games.Where(g => g.System == searchByPlatformViewModel.Platform);
-            SearchByPlatformViewModel viewModel = new SearchByPlatformViewModel(games);
+            IEnumerable<Game> games = context.Games.Where(g => g.System == searchByViewModel.Platform);
+            SearchByViewModel viewModel = new SearchByViewModel(games);
             return View(viewModel);
         }
 

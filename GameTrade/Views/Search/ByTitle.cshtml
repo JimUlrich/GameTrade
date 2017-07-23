@@ -2,10 +2,9 @@
 
 @if (Model.Games == null)
 {
-    Html.RenderPartial("_ByPlatformPartial");
+    Html.RenderPartial("_ByTitlePartial");
 }
 else
 {
     Html.RenderPartial("_SearchByPartial");
 }
-
