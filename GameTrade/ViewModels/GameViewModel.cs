@@ -21,19 +21,16 @@ namespace GameTrade.ViewModels
         [Required]
         [Range(0.01, 1000)]
         public decimal Value { get; set; }
-
+   
         [Required]
         public string Condition { get; set; }
-
         public string GameID { get; set; }
-
         public string GamesdbID { get; set; }
-
         public string Description { get; set; }
-
         public Game Game { get; set; }
-
         public string UserId { get; set; }
+        public string Designation { get; set; }
+        public string Genre { get; set; }
 
         public GameViewModel() { }
 

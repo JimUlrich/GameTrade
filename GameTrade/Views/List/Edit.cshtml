@@ -2,7 +2,7 @@
 
 <form asp-controller="List" asp-action="Edit" method="post">
 
-    @{Html.RenderPartial("AddEditForm");
+    @{Html.RenderPartial("_AddEditFormPartial");
     }
 
     <input type="hidden" name="GameId" value="@Model.Game.GameId" />

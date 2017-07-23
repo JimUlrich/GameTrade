@@ -11,8 +11,6 @@ namespace GameTrade.ViewModels
 {
     public class SearchByViewModel
     {
-        
-
         [Required]
         [Display(Name ="Please enter a title")]
         public string Title { get; set; }

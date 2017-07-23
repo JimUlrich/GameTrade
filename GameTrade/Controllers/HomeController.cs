@@ -10,18 +10,10 @@ namespace GameTrade.Controllers
 {
     public class HomeController : Controller
     {
-        private GameTradeDbContext context;
-
-        public HomeController(GameTradeDbContext dbContext)
-        {
-            context = dbContext;
-        }
-
+        
         public IActionResult Index()
         {
-            IList<ApplicationUser> users = context.Users.ToList();
-            return View(users);
-           
+            return View();          
         }
 
        //TODO: implement "search by" function 

@@ -8,22 +8,16 @@ namespace GameTrade.Models
 {
     public class Game
     {
-        
-
         public string Title { get; set; }
         public string System { get; set; }
         public string Year { get; set; }
         public decimal Value { get; set; }
         public string Description { get; set; }
         public string GameCondition { get; set; }
-     //   public List<string> Designation { get; set; }
+        public string Designation { get; set; }
         public int GameId { get; set; }
         public string UserId { get; set; }
-        
-
-
-
-
+        public string Genre { get; set; }
 
         //TODO: add tradeable designation and migrate
 

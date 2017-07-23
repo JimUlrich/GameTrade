@@ -9,6 +9,10 @@ namespace GameTrade.Models.AccountViewModels
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "UserName")]
+        public string NormalizedUserName { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

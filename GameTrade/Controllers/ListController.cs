@@ -9,10 +9,11 @@ using System.Net;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameTrade.Controllers
 {
+    [Authorize]
     public class ListController : Controller
 
     {
@@ -23,13 +24,9 @@ namespace GameTrade.Controllers
             context = dbContext;
         }
 
-        public IActionResult Index(string userId)
+        public IActionResult Index(string userId, string m)
         {
-            string checkUserId = Models.Extensions.GetUserID(User);
-            if (checkUserId == null)
-            {
-                return Redirect("Home");
-            }
+            ViewBag.Message = m;
 
             IEnumerable<Game> query = from g in context.Games
                         where g.UserId == userId
@@ -54,7 +51,7 @@ namespace GameTrade.Controllers
                 context.Games.Add(newGame);
                 context.SaveChanges();
 
-                return Redirect("/List");
+                return RedirectToAction("/List?m=Game%successfully%added");
             }
 
            return View(addGameViewModel);
@@ -138,12 +135,7 @@ namespace GameTrade.Controllers
 }
     
 
-        //TODO: is it better to break things up in to separate databases or to make more than 1 entry for every game?
-        // should users be able to enter their own systems or select from a list?
-       
-      
-        // use gamesdb naming conventions
-        //Sort by users preference/bst
+        //TODO:  use gamesdb naming conventions,     Sort by users preference/bst
         
        
         
