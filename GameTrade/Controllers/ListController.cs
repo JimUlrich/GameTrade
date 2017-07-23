@@ -5,11 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 
+
 using System.Net;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.Reflection;
+using System.Collections;
+using System;
 
 namespace GameTrade.Controllers
 {
@@ -138,11 +142,16 @@ namespace GameTrade.Controllers
         }
 
         public IActionResult UserList(string userId, string sort)
-        {
-            var sortingVariable = sort;
+        {           
             var query = context.Games.Where(g => g.UserId == userId);
-            var sortedQuery = query.OrderBy(g => g.sortingVariable);
-            return View(query);
+            var sortedQuery = query;
+            if (sort != null)
+            {
+                sortedQuery = query.OrderBy(g => g.GetType().GetProperty(sort).GetValue(g));
+            }
+            
+            Tuple<IEnumerable<Game>, string> tuple = new Tuple<IEnumerable<Game>, string>(sortedQuery, userId);
+            return View(tuple);
         }
     }
 

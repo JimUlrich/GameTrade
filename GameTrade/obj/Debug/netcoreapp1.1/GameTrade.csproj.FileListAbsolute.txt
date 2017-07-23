@@ -2,9 +2,9 @@ C:\Users\Jim\code\GameTrade\GameTrade\bin\Debug\netcoreapp1.1\GameTrade.deps.jso
 C:\Users\Jim\code\GameTrade\GameTrade\bin\Debug\netcoreapp1.1\GameTrade.runtimeconfig.json
 C:\Users\Jim\code\GameTrade\GameTrade\bin\Debug\netcoreapp1.1\GameTrade.runtimeconfig.dev.json
 C:\Users\Jim\code\GameTrade\GameTrade\obj\Debug\netcoreapp1.1\GameTrade.csprojResolveAssemblyReference.cache
-C:\Users\Jim\code\GameTrade\GameTrade\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs
 C:\Users\Jim\code\GameTrade\GameTrade\obj\Debug\netcoreapp1.1\GameTrade.AssemblyInfo.cs
 C:\Users\Jim\code\GameTrade\GameTrade\bin\Debug\netcoreapp1.1\GameTrade.dll
 C:\Users\Jim\code\GameTrade\GameTrade\bin\Debug\netcoreapp1.1\GameTrade.pdb
 C:\Users\Jim\code\GameTrade\GameTrade\obj\Debug\netcoreapp1.1\GameTrade.dll
 C:\Users\Jim\code\GameTrade\GameTrade\obj\Debug\netcoreapp1.1\GameTrade.pdb
+C:\Users\Jim\code\GameTrade\GameTrade\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs
