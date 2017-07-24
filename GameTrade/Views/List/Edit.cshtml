@@ -2,12 +2,20 @@
 @{
     ViewData["Title"] = "Edit Game";
 }
-<form asp-controller="List" asp-action="Edit" method="post">
+<form asp-controller="List" asp-action="Edit" method="post" class="form-horizontal">
+    <fieldset>
+        <legend>Edit Game</legend>
 
-    @{Html.RenderPartial("_AddEditFormPartial");
+    @{Html.RenderPartial("_FormPartial1");
+        Html.RenderPartial("_FormPartial2");
+        Html.RenderPartial("_UserIdPartial");
     }
 
-    <input type="hidden" name="GameId" value="@Model.Game.GameId" />
-
-    <input type="submit" value="Submit Edits"/>
+    <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2">
+            <input type="submit" class="btn btn-primary" value="Submit Edits" />
+        </div>
+    </div>
+    </fieldset>
+    
 </form>

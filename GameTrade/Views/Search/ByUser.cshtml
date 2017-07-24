@@ -1,14 +1,25 @@
 ﻿@model List<GameTrade.Models.ApplicationUser>
-
+@{
+    ViewData["Title"] = "Search By User";
+}
 <h1>Search by User</h1>
 <h5>Please click on a User to return their list of games</h5>
-<table>
-   
-@foreach (var user in Model)
-    {
-        <tr>
-            <td><a href="/List/UserList?userId=@user.Id">@user.UserName</a></td>
-        </tr>
 
-    }
+<table class="table table-striped table-hover table-bordered">
+    <tr>
+        <th>UserName</th>
+        <th>Number of Games</th>
+    </tr>
+
+    @{foreach (var user in Model)
+        {
+        <tr>
+         <td>@user.UserName</td>
+         <td><a href="/List/UserList?userId=@user.Id" class="btn btn-primary">View User</a></td>
+         <td></td>
+         
+    </tr>
+
+            }
+        }
 </table>

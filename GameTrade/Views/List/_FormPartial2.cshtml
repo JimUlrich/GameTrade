@@ -1,0 +1,30 @@
+﻿@model GameTrade.ViewModels.AddGameViewModel
+
+<div class="form-group">
+    <label asp-for="Condition" class="col-lg-2"></label>
+    <div class="col-lg-10">
+        <select asp-for="Condition" asp-items="@Model.GameConditions" class="form-control"></select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="Designation" class="col-lg-2"></label>
+    <div class="col-lg-10">
+        <select asp-for="Designation" asp-items="@Model.Designations" class="form-control"></select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="Value" class="col-lg-2"></label>
+    <div class="col-lg-10">
+        <input class="form-control" asp-for="Value" />
+        <span asp-validation-for="Value"></span>
+    </div>
+</div>
+
+<div class="form-group">
+     <label asp-for="Description" class="col-lg-2"></label>
+      <div class="col-lg-10">
+        <textarea class="form-control" rows="3"></textarea>
+      </div>
+</div>
