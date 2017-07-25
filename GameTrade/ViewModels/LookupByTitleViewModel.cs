@@ -26,11 +26,7 @@ namespace GameTrade.ViewModels
             Platform = viewmodel.Platform;
             Year = viewmodel.Year;
             UserId = viewmodel.UserId;
-        }
-
-        public LookupByTitleViewModel(string title)
-        {
-            Games = GetGamesList(title);
+            Games = GetGamesList(viewmodel.Title);
         }
 
         public LookupByTitleViewModel(ClaimsPrincipal user) 
@@ -82,6 +78,7 @@ namespace GameTrade.ViewModels
                     });
                 }
             }
+
 
             return Games;
         }

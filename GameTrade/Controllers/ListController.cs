@@ -29,6 +29,8 @@ namespace GameTrade.Controllers
         [Authorize]
         public IActionResult Index(string m)
         {
+            ViewBag.Message = m;
+
             IEnumerable<Game> query = from g in context.Games
                         where g.UserId == Models.Extensions.GetUserID(User)
                         select g;
@@ -72,7 +74,7 @@ namespace GameTrade.Controllers
         public IActionResult LookupByTitle(LookupByTitleViewModel lookupByTitleViewModel)
         {
             ViewBag.ErrorMessage = "Search did not return any results.  Please search again.";
-            LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(lookupByTitleViewModel.Title);
+            LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(lookupByTitleViewModel);
             return View(newLookupByTitleViewModel);
         }
 

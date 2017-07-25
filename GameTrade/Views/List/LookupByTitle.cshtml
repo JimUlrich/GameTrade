@@ -6,11 +6,11 @@
 <br>
 <form asp-controller="List" method="post">
     
-    @{if (Model.Games == null || Model.Games.Count() == 0)
+    @{if (Model.Games == null)
         {
             Html.RenderPartial("_LookupPartial1.cshtml");
         }
-        if (Model.Games != null && Model.Games.Count() == 0)
+        if (Model.Games == null && Model.Title != null)
         {
             <br />
             <br />
