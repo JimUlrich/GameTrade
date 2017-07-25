@@ -20,7 +20,7 @@ namespace GameTrade.Models
         public string UserId { get; set; }
         public string Genre { get; set; }
 
-        //TODO: implement tradeable designation  and genre
+        //TODO: implement  and genre
 
 
         public Game(AddGameViewModel viewModel)
@@ -48,6 +48,6 @@ namespace GameTrade.Models
             Designation = viewModel.Designation;
         }
 
-
+//TODO: make year an int or make regex
     }
 }

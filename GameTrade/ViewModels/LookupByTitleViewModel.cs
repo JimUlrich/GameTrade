@@ -51,6 +51,7 @@ namespace GameTrade.ViewModels
 
         private List<SelectListItem> GetGamesList(string title)
         {
+            
             XDocument xDoc = GetGamesDBInfo(title);
 
             List<SelectListItem> Games = new List<SelectListItem>();
@@ -65,13 +66,21 @@ namespace GameTrade.ViewModels
                             GameId = g.Element("id").Value
                         };
 
-            foreach (var item in query)
+            if (query.Count() == 0)
             {
-                Games.Add(new SelectListItem
+                Games = null;
+            }
+            else
+            {
+                foreach (var item in query)
                 {
-                    Text = item.Title + " - " + item.Platform,
-                    Value = item.GameId
-                });
+                    Games.Add(new SelectListItem
+                    {
+
+                        Text = item.Title + " - " + item.Platform,
+                        Value = item.GameId
+                    });
+                }
             }
 
             return Games;

@@ -31,7 +31,7 @@ namespace GameTrade.ViewModels
             {
                 Title = item.title;
                 Platform = item.platform;
-                Year = item.year;
+                Year = item.year.Substring(item.year.Length - 4); ;
             }
             GameConditions = BuildSelectListItem(conditions);
             UserId = Models.Extensions.GetUserID(user);

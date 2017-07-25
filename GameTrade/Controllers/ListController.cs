@@ -70,10 +70,10 @@ namespace GameTrade.Controllers
         [Authorize]
         [HttpPost]
         public IActionResult LookupByTitle(LookupByTitleViewModel lookupByTitleViewModel)
-        {       
-                
-                LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(lookupByTitleViewModel.Title);
-                return View(newLookupByTitleViewModel);
+        {
+            ViewBag.ErrorMessage = "Search did not return any results.  Please search again.";
+            LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(lookupByTitleViewModel.Title);
+            return View(newLookupByTitleViewModel);
         }
 
         [Authorize]
@@ -140,16 +140,16 @@ namespace GameTrade.Controllers
         }
 
         public IActionResult UserList(string userId, string sort)
-        {           
-            var query = context.Games.Where(g => g.UserId == userId);
-            var sortedQuery = query;
-            if (sort != null)
+        {
+            if (userId == null)
             {
-                sortedQuery = query.OrderBy(g => g.GetType().GetProperty(sort).GetValue(g));
+                return Redirect("/404");
             }
-            
+  
+            IEnumerable<Game> sortedQuery = Models.Extensions.GetSortedQuery(context, userId, sort);
             Tuple<IEnumerable<Game>, string> tuple = new Tuple<IEnumerable<Game>, string>(sortedQuery, userId);
             return View(tuple);
+         
         }
     }
 
@@ -158,7 +158,7 @@ namespace GameTrade.Controllers
 }
     
 
-        //TODO:  use gamesdb naming conventions,     Sort by users preference/bst
+        //TODO: VIEW  only
         
        
         

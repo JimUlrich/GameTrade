@@ -3,15 +3,15 @@
 @{
     ViewData["Title"] = "Look Up Game";
 }
-<form asp-controller="List" method="post">
+<form asp-controller="List" method="post" class="form-horizontal">
 
     @{ Html.RenderPartial("_FormPartial1");
         Html.RenderPartial("_UserIdPartial");
         }
         <div class="form-group">
             <div class="col-lg-10 col-lg-offset-2 btn-group">
-                <input type="submit" value="Search Again" class="btn btn-primary col-lg-2" asp-action="LookupByTitle" />
-                <input type="submit" value="Add Game" class="btn btn-primary col-lg-2" asp-action="Add" />
+                <input type="submit" value="Search Again" class="btn btn-success col-lg-2" asp-action="LookupByTitle" />
+                <input type="submit" value="Add Game" class="btn btn-success col-lg-2" asp-action="Add" />
             </div>
         </div>
 

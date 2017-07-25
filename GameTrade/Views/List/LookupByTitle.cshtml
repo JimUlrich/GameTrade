@@ -6,15 +6,20 @@
 <br>
 <form asp-controller="List" method="post">
     
-    @{if (Model.Games == null)
+    @{if (Model.Games == null || Model.Games.Count() == 0)
         {
             Html.RenderPartial("_LookupPartial1.cshtml");
-        } 
-
-            if (Model.Games != null)
-                {
-                    Html.RenderPartial("_LookupPartial0.cshtml");
-                }
+        }
+        if (Model.Games != null && Model.Games.Count() == 0)
+        {
+            <br />
+            <br />
+            <div>@ViewBag.ErrorMessage</div>
             }
+            if (Model.Games != null && Model.Games.Count() != 0)
+            {
+                Html.RenderPartial("_LookupPartial0.cshtml");
+            }
+        }
 
 </form>

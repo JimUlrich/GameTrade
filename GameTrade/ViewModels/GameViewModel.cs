@@ -16,6 +16,7 @@ namespace GameTrade.ViewModels
         public string Platform { get; set; }
 
         [Required]
+        [StringLength(4)]
         public string Year { get; set; }
 
         [Required]

@@ -1,14 +1,22 @@
 ﻿@model GameTrade.ViewModels.SearchByViewModel
 
 <h1>Search By Title</h1>
+<br />
+<br />
+<form asp-controller="Search" asp-action="ByTitle" method="post" class="form-horizontal">
 
-<form asp-controller="Search" asp-action="ByTitle" method="post">
     <div class="form-group">
-        <label asp-for="Title"></label>
-        <input class="form-control" asp-for="Title" />
-        <span asp-validation-for="Title"></span>
-        <span>@ViewBag.ErrorMessage</span>
+        <label asp-for="Title" class="col-lg-2"></label>
+        <div class="col-lg-10">
+            <input class="form-control" asp-for="Title" />
+            <span asp-validation-for="Title"></span>
+            <span>@ViewBag.ErrorMessage</span>
+        </div>
     </div>
 
-    <input type="submit" value="Search" />
+    <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2 btn-group">
+            <input type="submit" value="Search" class="btn btn-success col-lg-2" />
+        </div>
+    </div>
 </form>
