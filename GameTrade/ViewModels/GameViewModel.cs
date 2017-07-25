@@ -16,7 +16,7 @@ namespace GameTrade.ViewModels
         public string Platform { get; set; }
 
         [Required]
-        [StringLength(4)]
+        [RegularExpression("[0-9]{4}", ErrorMessage = "Year must be entered in XXXX format")]
         public string Year { get; set; }
 
         [Required]
