@@ -44,4 +44,3 @@ namespace GameTrade.ViewModels
     }
 }
 
-//TODO: create a method to fill form variables

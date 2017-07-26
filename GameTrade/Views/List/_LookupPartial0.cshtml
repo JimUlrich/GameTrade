@@ -3,8 +3,15 @@
 
 
 <div class="form-group">
-    <label asp-for="GameId"></label>
-    <select asp-for="GameId" asp-items="@Model.Games" class="form-control"></select>
+    <label asp-for="GameId" class="col-lg-2"></label>
+    <div class="col-lg-10">
+        <select asp-for="GameId" asp-items="@Model.Games" class="form-control"></select>
+    </div>
 </div>
 
-<input type="submit" class="btn btn-success" value="Select Game" asp-action="LookedupGame" />
+<div class="form-group">
+    <div class="col-lg-10 col-lg-offset-2">
+        <input type="submit" class="btn btn-success" value="Select Game" asp-action="LookupByTitle" />
+    </div>
+</div>
+

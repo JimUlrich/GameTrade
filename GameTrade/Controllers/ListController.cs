@@ -41,7 +41,7 @@ namespace GameTrade.Controllers
         [Authorize]
         public IActionResult Add()
         {
-                AddGameViewModel addGameViewModel = new AddGameViewModel(User);
+                AddGameViewModel addGameViewModel = new AddGameViewModel();
                 return View(addGameViewModel);
         }
 
@@ -52,6 +52,7 @@ namespace GameTrade.Controllers
             if (ModelState.IsValid)
             {
                 Game newGame = new Game(addGameViewModel);
+                newGame.UserId = Models.Extensions.GetUserID(User);
 
                 context.Games.Add(newGame);
                 context.SaveChanges();
@@ -65,7 +66,7 @@ namespace GameTrade.Controllers
         [Authorize]
         public IActionResult LookupByTitle()
         {
-            LookupByTitleViewModel lookupByTitleViewModel = new LookupByTitleViewModel(User);
+            LookupByTitleViewModel lookupByTitleViewModel = new LookupByTitleViewModel();
             return View(lookupByTitleViewModel);
         }
 
@@ -74,16 +75,17 @@ namespace GameTrade.Controllers
         public IActionResult LookupByTitle(LookupByTitleViewModel lookupByTitleViewModel)
         {
             ViewBag.ErrorMessage = "Search did not return any results.  Please search again.";
-            LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(lookupByTitleViewModel);
-            return View(newLookupByTitleViewModel);
-        }
-
-        [Authorize]
-        [HttpPost]
-        public IActionResult LookedupGame(LookupByTitleViewModel lookupByTitleViewModel)
-        {
-            LookedupGameViewModel lookedupGameViewModel = new LookedupGameViewModel(lookupByTitleViewModel, User);
-            return View(lookedupGameViewModel);
+            if (lookupByTitleViewModel.Games == null && lookupByTitleViewModel.GameId == 0)
+            {
+                string title = lookupByTitleViewModel.Title;
+                LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(title);
+                return View(newLookupByTitleViewModel);
+            }
+            else
+            {
+                LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(lookupByTitleViewModel.GameId);
+                return View(newLookupByTitleViewModel);
+            }
         }
 
         [Authorize]

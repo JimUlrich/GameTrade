@@ -16,8 +16,6 @@ namespace GameTrade.Controllers
             return View();          
         }
 
-       //TODO: implement "search by" function 
-
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

@@ -20,17 +20,10 @@ namespace GameTrade.ViewModels
         public List<SelectListItem> GameConditions { get; set; }
         public List<SelectListItem> Designations { get; set; }
 
-         public AddGameViewModel()
-         {
-            GameConditions = BuildSelectListItem(conditions);
-            Designations = BuildSelectListItem(designations);
-        }
-
-        public AddGameViewModel(ClaimsPrincipal user)
-        {           
-            UserId = Models.Extensions.GetUserID(user);
-            GameConditions = BuildSelectListItem(conditions);
-            Designations = BuildSelectListItem(designations);
+        public AddGameViewModel()
+        {
+        GameConditions = BuildSelectListItem(conditions);
+        Designations = BuildSelectListItem(designations);
         }
 
         internal List<SelectListItem> BuildSelectListItem(List<string> listField)
@@ -47,24 +40,5 @@ namespace GameTrade.ViewModels
             }
             return newList;
         }
-
-
-       
-
-       
-
-
-
-
-
-
-        //TODO: make a regex for the Year property
-        
-
-
-
-
-
-
     }
 }

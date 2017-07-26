@@ -25,13 +25,35 @@ namespace GameTrade.ViewModels
             Title = viewmodel.Title;
             Platform = viewmodel.Platform;
             Year = viewmodel.Year;
-            UserId = viewmodel.UserId;
-            Games = GetGamesList(viewmodel.Title);
+            GameId = viewmodel.GameId;
         }
 
-        public LookupByTitleViewModel(ClaimsPrincipal user) 
+        public LookupByTitleViewModel (string title)
         {
-            UserId = Models.Extensions.GetUserID(user);
+            Games = GetGamesList(title);
+        }
+
+        public LookupByTitleViewModel (int id)
+        {            
+            List<string> gameData = new List<string>();
+            XDocument xDoc = GetGameDBInfoById(id);
+            string gameid = id.ToString();
+
+            var query = from g in xDoc.Descendants("Game")
+                        where g.Element("id").Value == gameid
+                        select new
+                        {
+                            title = g.Element("GameTitle").Value,
+                            platform = g.Element("Platform").Value,
+                            year = g.Element("ReleaseDate").Value,
+                        };
+            foreach (var item in query)
+            {
+                Title = item.title;
+                Platform = item.platform;
+                Year = item.year.Substring(item.year.Length - 4); ;
+            }
+            GameId = id;
         }
 
         private XDocument GetGamesDBInfo(string title)
@@ -45,7 +67,15 @@ namespace GameTrade.ViewModels
             return gamesdbXdoc;
         }
 
-        private List<SelectListItem> GetGamesList(string title)
+        private XDocument GetGameDBInfoById(int id)
+        {
+            WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/GetGame.php?id=" + id);
+            WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
+            XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
+            return gamesdbXdoc;
+        }
+
+        private List<SelectListItem> GetGamesList(string title, string platform = null, string year = null)  
         {
             
             XDocument xDoc = GetGamesDBInfo(title);
@@ -53,7 +83,9 @@ namespace GameTrade.ViewModels
             List<SelectListItem> Games = new List<SelectListItem>();
 
             var query = from g in xDoc.Descendants("Game")
-                        where g.Element("GameTitle").Value.ToLower() == title.ToLower()
+                        where g.Element("GameTitle").Value.ToLower() == title.ToLower() &&
+                        (g.Element("Platform").Value == platform || string.IsNullOrEmpty(platform)) &&
+                        (g.Element("ReleaseDate").Value.Substring(g.Element("ReleaseDate").Value.Length - 4) == year || string.IsNullOrEmpty(year))
                         select new
                         {
                             Title = g.Element("GameTitle").Value,
@@ -78,8 +110,6 @@ namespace GameTrade.ViewModels
                     });
                 }
             }
-
-
             return Games;
         }
     }

@@ -47,7 +47,5 @@ namespace GameTrade.Models
             GameCondition = viewModel.Condition;
             Designation = viewModel.Designation;
         }
-
-//TODO: make year an int or make regex
     }
 }

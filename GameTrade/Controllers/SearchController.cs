@@ -59,7 +59,7 @@ namespace GameTrade.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "Title not found";
+                    ViewBag.ErrorMessage = "No games were found with that title.  Please search again.";
                     return View(searchByViewModel);
                 }
             }
