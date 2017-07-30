@@ -13,7 +13,8 @@ namespace GameTrade.ViewModels
         public string Title { get; set; }
 
         [Required]
-        public string Platform { get; set; }
+        [Display(Name = "Platform")]
+        public int PlatformId { get; set; }
 
         [Required]
         [RegularExpression("[0-9]{4}", ErrorMessage = "Year must be entered in XXXX format")]
@@ -24,13 +25,20 @@ namespace GameTrade.ViewModels
         public decimal Value { get; set; }
    
         [Required]
-        public string Condition { get; set; }
-        public string GameID { get; set; }
+        [Display(Name = "Condition")]
+        public int ConditionId { get; set; }
+
+        [Required]
+        [Display(Name = "Buy/Sell")]
+        public int DesignationId { get; set; }
+
+
+        public int GameID { get; set; }
         public string GamesdbID { get; set; }
         public string Description { get; set; }
         public Game Game { get; set; }
         public string UserId { get; set; }
-        public string Designation { get; set; }
+    
         public string Genre { get; set; }
 
         public GameViewModel() { }

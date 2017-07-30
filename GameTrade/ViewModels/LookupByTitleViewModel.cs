@@ -13,6 +13,7 @@ namespace GameTrade.ViewModels
 {
     public class LookupByTitleViewModel : AddGameViewModel
     {
+        public string Platform { get; set; }
         public List<SelectListItem> Games { get; set; }
 
         [Display(Name = "Please select a game")]

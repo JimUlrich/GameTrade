@@ -8,9 +8,10 @@ using GameTrade.Data;
 namespace GameTrade.Data.Migrations
 {
     [DbContext(typeof(GameTradeDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170730180627_addedconditionsanddesigs")]
+    partial class addedconditionsanddesigs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -95,11 +96,9 @@ namespace GameTrade.Data.Migrations
                     b.Property<int>("GameId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ConditionId");
-
                     b.Property<string>("Description");
 
-                    b.Property<int>("DesignationId");
+                    b.Property<string>("Designation");
 
                     b.Property<string>("GameCondition");
 
@@ -118,10 +117,6 @@ namespace GameTrade.Data.Migrations
                     b.Property<string>("Year");
 
                     b.HasKey("GameId");
-
-                    b.HasIndex("ConditionId");
-
-                    b.HasIndex("DesignationId");
 
                     b.HasIndex("PlatformId");
 
@@ -249,16 +244,6 @@ namespace GameTrade.Data.Migrations
 
             modelBuilder.Entity("GameTrade.Models.Game", b =>
                 {
-                    b.HasOne("GameTrade.Models.Condition", "Condition")
-                        .WithMany()
-                        .HasForeignKey("ConditionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GameTrade.Models.Designation", "Designation")
-                        .WithMany()
-                        .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("GameTrade.Models.Platform", "Platform")
                         .WithMany()
                         .HasForeignKey("PlatformId")

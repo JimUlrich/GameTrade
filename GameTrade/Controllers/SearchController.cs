@@ -69,18 +69,17 @@ namespace GameTrade.Controllers
 
         public IActionResult ByPlatform()
         {
-            IEnumerable platforms =
-                from p in context.Games
-                select p.System;
+            List<Platform> platforms = context.Platforms.ToList();
+            ViewBag.Platforms = platforms;
 
-            SearchByViewModel searchByViewModel = new SearchByViewModel(platforms);
+            SearchByViewModel searchByViewModel = new SearchByViewModel();
             return View(searchByViewModel);
         }
 
         [HttpPost]
         public IActionResult ByPlatform(SearchByViewModel searchByViewModel)
         {
-            IEnumerable<Game> games = context.Games.Where(g => g.System == searchByViewModel.Platform);
+            IEnumerable<Game> games = context.Games.Where(g => g.PlatformId == searchByViewModel.PlatformId);
             SearchByViewModel viewModel = new SearchByViewModel(games);
             return View(viewModel);
         }

@@ -41,8 +41,17 @@ namespace GameTrade.Controllers
         [Authorize]
         public IActionResult Add()
         {
-                AddGameViewModel addGameViewModel = new AddGameViewModel();
-                return View(addGameViewModel);
+            List<Platform> platforms = context.Platforms.ToList();
+            ViewBag.Platforms = platforms;
+
+            List<Condition> conditions = context.Conditions.ToList();
+            ViewBag.Conditions = conditions;
+
+            List<Designation> designations = context.Designations.ToList();
+            ViewBag.Designations = designations;
+
+            AddGameViewModel addGameViewModel = new AddGameViewModel();
+            return View(addGameViewModel);
         }
 
         [Authorize]
@@ -152,8 +161,33 @@ namespace GameTrade.Controllers
   
             IEnumerable<Game> sortedQuery = Models.Extensions.GetSortedQuery(context, userId, sort);
             Tuple<IEnumerable<Game>, string> tuple = new Tuple<IEnumerable<Game>, string>(sortedQuery, userId);
-            return View(tuple);
-         
+            return View(tuple); 
+        }
+
+        public IActionResult AddPlatform(string platformToQuery)
+        {
+            List<Platform> platforms = context.Platforms.ToList();
+
+
+            List<string> platformNames = new List<string>();
+
+            foreach (var platform in platforms)
+            {
+                platformNames.Add(platform.Name);
+            }
+
+            if (!platformNames.Contains(platformToQuery))
+            {
+                Platform newPlatform = new Platform
+                {
+                    Name = platformToQuery
+                };
+
+                context.Platforms.Add(newPlatform);
+                context.SaveChanges();
+            }
+
+            return View();
         }
     }
 
