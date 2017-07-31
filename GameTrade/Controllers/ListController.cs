@@ -43,10 +43,8 @@ namespace GameTrade.Controllers
         {
             List<Platform> platforms = context.Platforms.ToList();
             ViewBag.Platforms = platforms;
-
             List<Condition> conditions = context.Conditions.ToList();
             ViewBag.Conditions = conditions;
-
             List<Designation> designations = context.Designations.ToList();
             ViewBag.Designations = designations;
 
@@ -69,7 +67,14 @@ namespace GameTrade.Controllers
                 return Redirect("/List?m=Game Successfully Added");
             }
 
-           return View(addGameViewModel);
+            List<Platform> platforms = context.Platforms.ToList();
+            ViewBag.Platforms = platforms;
+            List<Condition> conditions = context.Conditions.ToList();
+            ViewBag.Conditions = conditions;
+            List<Designation> designations = context.Designations.ToList();
+            ViewBag.Designations = designations;
+
+            return View(addGameViewModel);
         }
 
         [Authorize]
@@ -83,16 +88,20 @@ namespace GameTrade.Controllers
         [HttpPost]
         public IActionResult LookupByTitle(LookupByTitleViewModel lookupByTitleViewModel)
         {
-            ViewBag.ErrorMessage = "Search did not return any results.  Please search again.";
+            
             if (lookupByTitleViewModel.Games == null && lookupByTitleViewModel.GameId == 0)
             {
+                ViewBag.TitleErrorMessage = "Search did not return any results.  Please search again.";
+                ViewBag.QueryLengthErrorMessage = "Search yielded too many results.  Please narrow by platform";
+
                 string title = lookupByTitleViewModel.Title;
-                LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(title);
+                string platform = lookupByTitleViewModel.PlatformName;
+                LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(title, platform );
                 return View(newLookupByTitleViewModel);
             }
             else
             {
-                LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(lookupByTitleViewModel.GameId);
+                LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(lookupByTitleViewModel.GameId, context);
                 return View(newLookupByTitleViewModel);
             }
         }

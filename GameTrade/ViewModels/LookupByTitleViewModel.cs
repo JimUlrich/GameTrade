@@ -8,33 +8,29 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using GameTrade.Data;
+
 
 namespace GameTrade.ViewModels
 {
     public class LookupByTitleViewModel : AddGameViewModel
     {
-        public string Platform { get; set; }
+        public bool QueryTooLong { get; set; }
+        public string PlatformName { get; set; }
         public List<SelectListItem> Games { get; set; }
+        
 
         [Display(Name = "Please select a game")]
         public int GameId { get; set; }
 
         public LookupByTitleViewModel() { }
 
-        public LookupByTitleViewModel(LookupByTitleViewModel viewmodel)
+        public LookupByTitleViewModel (string title, string platform = null)
         {
-            Title = viewmodel.Title;
-            Platform = viewmodel.Platform;
-            Year = viewmodel.Year;
-            GameId = viewmodel.GameId;
+            Games = GetGamesList(title, platform);         
         }
 
-        public LookupByTitleViewModel (string title)
-        {
-            Games = GetGamesList(title);
-        }
-
-        public LookupByTitleViewModel (int id)
+        public LookupByTitleViewModel (int id, GameTradeDbContext context)
         {            
             List<string> gameData = new List<string>();
             XDocument xDoc = GetGameDBInfoById(id);
@@ -51,10 +47,12 @@ namespace GameTrade.ViewModels
             foreach (var item in query)
             {
                 Title = item.title;
-                Platform = item.platform;
-                Year = item.year.Substring(item.year.Length - 4); ;
+                PlatformId = GetPlatformId(item.platform, context);
+                Year = item.year.Substring(item.year.Length - 4);
+                PlatformName = item.platform;
             }
             GameId = id;
+            
         }
 
         private XDocument GetGamesDBInfo(string title)
@@ -76,28 +74,53 @@ namespace GameTrade.ViewModels
             return gamesdbXdoc;
         }
 
-        private List<SelectListItem> GetGamesList(string title, string platform = null, string year = null)  
+        private List<SelectListItem> GetGamesList(string title, string platform = null, string year = null)
         {
-            
+
             XDocument xDoc = GetGamesDBInfo(title);
 
+            QueryTooLong = false; 
             List<SelectListItem> Games = new List<SelectListItem>();
+            List<SelectListItem> PlatformList = new List<SelectListItem>();
+            List<string> platforms = new List<string>();
 
             var query = from g in xDoc.Descendants("Game")
-                        where g.Element("GameTitle").Value.ToLower() == title.ToLower() &&
-                        (g.Element("Platform").Value == platform || string.IsNullOrEmpty(platform)) &&
-                        (g.Element("ReleaseDate").Value.Substring(g.Element("ReleaseDate").Value.Length - 4) == year || string.IsNullOrEmpty(year))
+                        where g.Element("GameTitle").Value.ToLower().Contains(title.ToLower()) &&
+                        (g.Element("Platform").Value == platform || string.IsNullOrEmpty(platform))
                         select new
                         {
                             Title = g.Element("GameTitle").Value,
                             Platform = g.Element("Platform").Value,
-                            Year = g.Element("ReleaseDate").Value,
                             GameId = g.Element("id").Value
                         };
 
             if (query.Count() == 0)
             {
                 Games = null;
+            }
+            if (query.Count() > 10)
+            {
+                Games = null;
+                QueryTooLong = true;
+
+                foreach (var item in query)
+                {
+                    if (!platforms.Contains(item.Platform))
+                    {
+                        platforms.Add(item.Platform);
+                    }
+                }
+
+                foreach (string system in platforms)
+                {                
+                        PlatformList.Add(new SelectListItem
+                        {
+                            Text = system,
+                            Value = system
+                        });
+                    
+                }
+                Platforms = PlatformList;
             }
             else
             {
@@ -111,15 +134,35 @@ namespace GameTrade.ViewModels
                     });
                 }
             }
-            return Games;
+
+            return Games;          
+        }
+
+        private int GetPlatformId (string platformName, GameTradeDbContext context)
+        {
+            try
+            {
+                Platform platform = context.Platforms.Single(p => p.Name == platformName);
+                int platformId = platform.Id;
+                return platformId;
+            }
+            catch (InvalidOperationException)
+            {
+                Platform newPlatform = new Platform
+                {
+                    Name = platformName
+                };
+                context.Platforms.Add(newPlatform);
+                context.SaveChanges();
+
+                return newPlatform.Id;
+            }
         }
     }
-
-   
-
-    
-    //TODO: modify view to allow platofrm entry
-
-
-
 }
+
+
+
+
+
+

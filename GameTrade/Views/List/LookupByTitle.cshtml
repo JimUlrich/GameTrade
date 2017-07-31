@@ -6,16 +6,33 @@
 <br>
 <form asp-controller="List" method="post" class="form-horizontal">
     
-    @{if (Model.Games == null && Model.GameId == 0)
+    @{if (Model.Games == null && Model.Title != null && Model.GameId == 0)
+        {
+           
+            <div>@ViewBag.TitleErrorMessage</div>
+        }
+
+        if (Model.QueryTooLong == true)
+        {
+            <div>@ViewBag.QueryLengthErrorMessage</div>
+            <br />
+            <br />
+            
+            <div class="form-group">
+                <label asp-for="PlatformName" class="col-lg-2"></label>
+                <div class="col-lg-10">
+                    <select asp-for="PlatformName" class="form-control"
+                            asp-items="@Model.Platforms"></select>
+                </div>
+            </div>
+
+        }
+
+        if (Model.Games == null && Model.GameId == 0)
         {
             Html.RenderPartial("_LookupPartial1.cshtml");
         }
-        if (Model.Games == null && Model.Title != null && Model.GameId == 0)
-        {
-            <br />
-            <br />
-            <div>@ViewBag.ErrorMessage</div>
-        }
+
         if (Model.Games != null && Model.Games.Count() != 0)
         {
             Html.RenderPartial("_LookupPartial0.cshtml");
@@ -33,10 +50,9 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Platform" class="col-lg-2"></label>
+                <label asp-for="PlatformName" class="col-lg-2"></label>
                 <div class="col-lg-10">
-                    <input class="form-control" asp-for="Platform" />
-                  
+                    <input class="form-control" asp-for="PlatformName" />                 
                 </div>
             </div>
 
@@ -49,6 +65,8 @@
             </div>
 
             Html.RenderPartial("_UserIdPartial");
+           
+            <input type="hidden" asp-for="PlatformId" value="@Model.PlatformId"/>
 
         <div class="form-group">
             <div class="col-lg-10 col-lg-offset-2 btn-group">
