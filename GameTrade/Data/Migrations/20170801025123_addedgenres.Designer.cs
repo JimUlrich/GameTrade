@@ -8,9 +8,10 @@ using GameTrade.Data;
 namespace GameTrade.Data.Migrations
 {
     [DbContext(typeof(GameTradeDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170801025123_addedgenres")]
+    partial class addedgenres
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -101,7 +102,7 @@ namespace GameTrade.Data.Migrations
 
                     b.Property<int>("DesignationId");
 
-                    b.Property<int>("GenreId");
+                    b.Property<string>("Genre");
 
                     b.Property<int>("PlatformId");
 
@@ -118,8 +119,6 @@ namespace GameTrade.Data.Migrations
                     b.HasIndex("ConditionId");
 
                     b.HasIndex("DesignationId");
-
-                    b.HasIndex("GenreId");
 
                     b.HasIndex("PlatformId");
 
@@ -267,11 +266,6 @@ namespace GameTrade.Data.Migrations
                     b.HasOne("GameTrade.Models.Designation", "Designation")
                         .WithMany()
                         .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GameTrade.Models.Genre", "Genre")
-                        .WithMany()
-                        .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GameTrade.Models.Platform", "Platform")

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Reflection;
 using System.Collections;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameTrade.Controllers
 {
@@ -30,11 +31,14 @@ namespace GameTrade.Controllers
         public IActionResult Index(string m)
         {
             ViewBag.Message = m;
+            string userId = Models.Extensions.GetUserID(User);
 
-            IEnumerable<Game> query = from g in context.Games
-                        where g.UserId == Models.Extensions.GetUserID(User)
-                        select g;
-
+            IEnumerable<Game> query = context.Games.Where(g => g.UserId == userId)
+                                      .Include(g => g.Platform)
+                                      .Include(g => g.Condition)
+                                      .Include(g => g.Designation);
+            
+                        
             return View(query);
         }
 
@@ -120,6 +124,7 @@ namespace GameTrade.Controllers
             foreach (int gameId in gameIds)
             {
                 Game thegame = context.Games.Single(g => g.GameId == gameId);
+                var newgame = thegame.GetType().GetProperty("Platform").GetValue(thegame);
                 context.Games.Remove(thegame);
             }
 
@@ -198,6 +203,8 @@ namespace GameTrade.Controllers
 
             return View();
         }
+        
+
     }
 
 

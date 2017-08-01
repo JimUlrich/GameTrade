@@ -8,9 +8,10 @@ using GameTrade.Data;
 namespace GameTrade.Data.Migrations
 {
     [DbContext(typeof(GameTradeDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170731011132_updatedgameclass2")]
+    partial class updatedgameclass2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -101,7 +102,7 @@ namespace GameTrade.Data.Migrations
 
                     b.Property<int>("DesignationId");
 
-                    b.Property<int>("GenreId");
+                    b.Property<string>("Genre");
 
                     b.Property<int>("PlatformId");
 
@@ -119,23 +120,9 @@ namespace GameTrade.Data.Migrations
 
                     b.HasIndex("DesignationId");
 
-                    b.HasIndex("GenreId");
-
                     b.HasIndex("PlatformId");
 
                     b.ToTable("Games");
-                });
-
-            modelBuilder.Entity("GameTrade.Models.Genre", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("GameTrade.Models.Platform", b =>
@@ -267,11 +254,6 @@ namespace GameTrade.Data.Migrations
                     b.HasOne("GameTrade.Models.Designation", "Designation")
                         .WithMany()
                         .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GameTrade.Models.Genre", "Genre")
-                        .WithMany()
-                        .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GameTrade.Models.Platform", "Platform")

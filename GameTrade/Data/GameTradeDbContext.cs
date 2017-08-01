@@ -14,6 +14,7 @@ namespace GameTrade.Data
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<Condition> Conditions { get; set; }
         public DbSet<Designation> Designations { get; set; }
+        public DbSet<Genre> Genres { get; set; }
 
 
         public GameTradeDbContext(DbContextOptions<GameTradeDbContext> options)

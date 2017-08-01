@@ -6,7 +6,7 @@
         <th>Title</th>
         <th>Platform</th>
         <th>Year</th>
-        <th>GameCondition</th>
+        <th>Game Condition</th>
         <th>Value</th>
         <th>Buy/Sell </th>
         <th> </th>
@@ -18,11 +18,11 @@
     {
         <tr>
             <td>@game.Title</td>
-            <td>@game.System</td>
+            <td>@game.Platform.Name</td>
             <td>@game.Year</td>
-            <td>@game.GameCondition</td>
+            <td>@game.Condition.Name</td>
             <td>$@game.Value</td>
-            <td>@game.Designation</td>
+            <td>@game.Designation.Name</td>
 
            
             <td><a asp-controller="List" class="btn btn-primary" asp-action="Edit" asp-route-id="@game.GameId">Edit</a></td>

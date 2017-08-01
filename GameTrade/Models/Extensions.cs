@@ -9,6 +9,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Dynamic.Core;
 
 namespace GameTrade.Models
 {
@@ -28,16 +30,24 @@ namespace GameTrade.Models
             return userId;
         }
 
+     
         public static IEnumerable<Game> GetSortedQuery(GameTradeDbContext context, string userId, string sort = "")
         {
-            var query =  context.Games.Where(g => g.UserId == userId);
-            var sortedQuery = query;
-            if (sort != null)
+            var query = context.Games.Where(g => g.UserId == userId).Include(g => g.Platform).Include(g => g.Condition).Include(g => g.Designation);
+            if (sort != null && sort != "Platform")
             {
-                sortedQuery = query.OrderBy(g => g.GetType().GetProperty(sort).GetValue(g));
+                var sortedQuery = query.OrderBy(g => g.GetType().GetProperty(sort).GetValue(g));
+                return sortedQuery;
             }
-
-            return sortedQuery;
+            if (sort == "Platform")
+            {
+                var sortedQuery = query.OrderBy(g => g.Platform.Name);
+                return sortedQuery;
+            }
+            else
+            {
+                return query;
+            }
         }
 
         public static void AddPlatform(GameTradeDbContext context, string platformToQuery)

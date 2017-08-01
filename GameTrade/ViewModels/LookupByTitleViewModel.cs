@@ -43,6 +43,7 @@ namespace GameTrade.ViewModels
                             title = g.Element("GameTitle").Value,
                             platform = g.Element("Platform").Value,
                             year = g.Element("ReleaseDate").Value,
+                            genre = g.Element("Genre").Value,
                         };
             foreach (var item in query)
             {
@@ -50,28 +51,10 @@ namespace GameTrade.ViewModels
                 PlatformId = GetPlatformId(item.platform, context);
                 Year = item.year.Substring(item.year.Length - 4);
                 PlatformName = item.platform;
+                Genre = item.genre;
             }
             GameId = id;
             
-        }
-
-        private XDocument GetGamesDBInfo(string title)
-        {
-            WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/GetGamesList.php?name=" + title);
-
-            //might be able to move this bit to avoid repetition
-
-            WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
-            XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
-            return gamesdbXdoc;
-        }
-
-        private XDocument GetGameDBInfoById(int id)
-        {
-            WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/GetGame.php?id=" + id);
-            WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
-            XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
-            return gamesdbXdoc;
         }
 
         private List<SelectListItem> GetGamesList(string title, string platform = null, string year = null)
@@ -138,7 +121,7 @@ namespace GameTrade.ViewModels
             return Games;          
         }
 
-        private int GetPlatformId (string platformName, GameTradeDbContext context)
+        private int GetPlatformId(string platformName, GameTradeDbContext context)
         {
             try
             {
@@ -158,6 +141,28 @@ namespace GameTrade.ViewModels
                 return newPlatform.Id;
             }
         }
+
+            private XDocument GetGamesDBInfo(string title)
+            {
+                WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/GetGamesList.php?name=" + title);
+
+                //might be able to move this bit to avoid repetition
+
+                WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
+                XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
+                return gamesdbXdoc;
+            }
+
+            private XDocument GetGameDBInfoById(int id)
+            {
+                WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/GetGame.php?id=" + id);
+                WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
+                XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
+                return gamesdbXdoc;
+            }
+
+
+        
     }
 }
 

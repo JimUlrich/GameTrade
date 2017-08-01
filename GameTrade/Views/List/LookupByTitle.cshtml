@@ -41,6 +41,10 @@
 
         if (Model.GameId != 0)
         {
+            <h3>Does this look OK?</h3>
+            <br />
+            <br />
+
             <div class="form-group">
                 <label asp-for="Title" class="col-lg-2"></label>
                 <div class="col-lg-10">
@@ -67,10 +71,11 @@
             Html.RenderPartial("_UserIdPartial");
            
             <input type="hidden" asp-for="PlatformId" value="@Model.PlatformId"/>
+            
 
         <div class="form-group">
             <div class="col-lg-10 col-lg-offset-2 btn-group">
-                <input type="submit" value="Search Again" class="btn btn-success col-lg-2" asp-action="LookupByTitle" />
+                <input type="submit" value="Search Again" class="btn btn-danger col-lg-2" asp-action="LookupByTitle" />
                 <input type="submit" value="Add Game" class="btn btn-success col-lg-2" asp-action="Add" />
             </div>
         </div>
