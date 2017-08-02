@@ -12,7 +12,7 @@
     <label asp-for="PlatformId" class="col-lg-2"></label>
     <div class="col-lg-10">
         <select asp-for="PlatformId" class="form-control"
-                asp-items="@(new SelectList(@ViewBag.Platforms,"Id", "Name"))"></select>
+                asp-items="@Model.Platforms"></select>
         <span asp-validation-for="PlatformId"></span>
     </div>
 </div>

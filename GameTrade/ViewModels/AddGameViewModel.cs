@@ -11,49 +11,43 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using GameTrade.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace GameTrade.ViewModels
 {
     public class AddGameViewModel : GameViewModel
     {
-        
-
-        internal List<string> conditions = new List<string> { "Mint", "Near Mint", "Excellent", "Good", "Fair", "Poor" };
-        internal List<string> designations = new List<string> { "For Sale", "Wanted", "For Trade" };
-
-        public List<SelectListItem> GameConditions { get; set; }
+       
+        public List<SelectListItem> Conditions { get; set; }
         public List<SelectListItem> Designations { get; set; }
         public List<SelectListItem> Platforms { get; set; }
+        public List<SelectListItem> Genres { get; set; }
 
-        public AddGameViewModel()
-        {
-            GameConditions = BuildSelectListItem(conditions);
-            Designations = BuildSelectListItem(designations);
-        }
+        public AddGameViewModel() { }
 
         public AddGameViewModel(GameTradeDbContext context)
         {
-
+            Platforms = BuildSelectListItem(GetDbSet(context, "Platforms"));
+            Conditions = BuildSelectListItem(GetDbSet(context, "Conditions"));
+            Designations = BuildSelectListItem(GetDbSet(context, "Designations"));
         }
-
        
-        
-        private IList BuildList(GameTradeDbContext context)
+        internal IEnumerable GetDbSet(GameTradeDbContext context, string dbSet)
         {
-            IList items = context.Platforms.ToList();
-            return items; 
+            var newDbSet = context.GetType().GetProperty(dbSet);
+            return (IEnumerable)newDbSet.GetValue(context);
         }
 
-        private List<SelectListItem> BuildSelectListItem(List<string> list)
+        private List<SelectListItem> BuildSelectListItem(IEnumerable dbSet)
         {
             List<SelectListItem> newList = new List<SelectListItem>();
 
-            foreach (var item in list)
+            foreach (var item in dbSet)
             {
                 newList.Add(new SelectListItem
                 {
-                    Text = item,
-                    Value = item
+                    Text = item.GetType().GetProperty("Name").GetValue(item).ToString(),
+                    Value = item.GetType().GetProperty("Id").GetValue(item).ToString()
                 });
             }
             return newList;

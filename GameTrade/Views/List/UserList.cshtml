@@ -1,17 +1,6 @@
 ﻿@model Tuple<IEnumerable<Game>, string>
 
 
-<div class="btn-group pull-right">
-    <a href="#" class="btn btn-primary">Sort By</a>
-    <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
-    <ul class="dropdown-menu">
-        <li><a href="/List/UserList?sort=Title&userId=@Model.Item2">Title</a></li>
-        <li><a href="/List/UserList?sort=Platform&userId=@Model.Item2">Platform</a></li>
-        <li><a href="/List/UserList?sort=Year&userId=@Model.Item2">Release Date</a></li>
-        <li><a href="/List/UserList?sort=Value&userId=@Model.Item2">Value</a></li>
-    </ul>
-</div>
-
-@{ Html.RenderPartial("_ListPartial");}
+@{ Html.RenderPartial("_ListTable");}
 
 

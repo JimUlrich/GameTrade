@@ -51,8 +51,10 @@ namespace GameTrade.Controllers
             ViewBag.Conditions = conditions;
             List<Designation> designations = context.Designations.ToList();
             ViewBag.Designations = designations;
+            List<Genre> genres = context.Genres.ToList();
+            ViewBag.Genres = genres;
 
-            AddGameViewModel addGameViewModel = new AddGameViewModel();
+            AddGameViewModel addGameViewModel = new AddGameViewModel(context);
             return View(addGameViewModel);
         }
 
@@ -92,7 +94,7 @@ namespace GameTrade.Controllers
         [HttpPost]
         public IActionResult LookupByTitle(LookupByTitleViewModel lookupByTitleViewModel)
         {
-            
+           
             if (lookupByTitleViewModel.Games == null && lookupByTitleViewModel.GameId == 0)
             {
                 ViewBag.TitleErrorMessage = "Search did not return any results.  Please search again.";
@@ -100,7 +102,9 @@ namespace GameTrade.Controllers
 
                 string title = lookupByTitleViewModel.Title;
                 string platform = lookupByTitleViewModel.PlatformName;
-                LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(title, platform );
+                string gameList = lookupByTitleViewModel.GameList;
+                
+                LookupByTitleViewModel newLookupByTitleViewModel = new LookupByTitleViewModel(title, platform, gameList);
                 return View(newLookupByTitleViewModel);
             }
             else

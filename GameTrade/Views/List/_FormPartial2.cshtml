@@ -4,7 +4,7 @@
     <label asp-for="ConditionId" class="col-lg-2"></label>
     <div class="col-lg-10">
         <select asp-for="ConditionId" class="form-control"
-                asp-items="@(new SelectList(ViewBag.Conditions, "Id", "Name"))"></select>
+                asp-items="@Model.Conditions"></select>
     </div>
 </div>
 
@@ -12,7 +12,15 @@
     <label asp-for="DesignationId" class="col-lg-2"></label>
     <div class="col-lg-10">
         <select asp-for="DesignationId" class="form-control"
-                asp-items="@(new SelectList(ViewBag.Designations, "Id", "Name"))" ></select>
+                asp-items="@Model.Designations" ></select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="GenreId" class="col-lg-2"></label>
+    <div class="col-lg-10">
+        <select asp-for="GenreId" class="form-control"
+                asp-items="@(new SelectList(ViewBag.Genres, "Id", "Name"))"></select>
     </div>
 </div>
 

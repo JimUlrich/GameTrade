@@ -17,25 +17,37 @@ namespace GameTrade.ViewModels
     {
         public bool QueryTooLong { get; set; }
         public string PlatformName { get; set; }
+        public string GenreName { get; set; }
         public List<SelectListItem> Games { get; set; }
-        
+        public string GameList { get; set; }
 
         [Display(Name = "Please select a game")]
         public int GameId { get; set; }
 
         public LookupByTitleViewModel() { }
 
-        public LookupByTitleViewModel (string title, string platform = null)
+        public LookupByTitleViewModel(string title, string platform = null, string gameList = null)
         {
-            Games = GetGamesList(title, platform);         
-        }
+            XDocument xDoc = new XDocument();
+
+            if (gameList == null)
+            {
+                xDoc = GetGamesDBInfo(title, "GetGamesList", "name");
+            }
+            else
+            {
+                xDoc = XDocument.Parse(gameList);
+            }
+            GameList = xDoc.ToString();
+            Games = GetGamesList(title, xDoc, platform );
+        }  
 
         public LookupByTitleViewModel (int id, GameTradeDbContext context)
-        {            
-            List<string> gameData = new List<string>();
-            XDocument xDoc = GetGameDBInfoById(id);
+        {
             string gameid = id.ToString();
-
+            List<string> gameData = new List<string>();
+            XDocument xDoc = GetGamesDBInfo(gameid, "GetGame", "id");
+            
             var query = from g in xDoc.Descendants("Game")
                         where g.Element("id").Value == gameid
                         select new
@@ -43,7 +55,7 @@ namespace GameTrade.ViewModels
                             title = g.Element("GameTitle").Value,
                             platform = g.Element("Platform").Value,
                             year = g.Element("ReleaseDate").Value,
-                            genre = g.Element("Genre").Value,
+                          //  genre = g.Element("genre").Value,
                         };
             foreach (var item in query)
             {
@@ -51,23 +63,20 @@ namespace GameTrade.ViewModels
                 PlatformId = GetPlatformId(item.platform, context);
                 Year = item.year.Substring(item.year.Length - 4);
                 PlatformName = item.platform;
-                Genre = item.genre;
+              //  GenreName = item.genre;
             }
             GameId = id;
             
         }
 
-        private List<SelectListItem> GetGamesList(string title, string platform = null, string year = null)
+        private List<SelectListItem> GetGamesList(string title, XDocument XDoc, string platform = null )
         {
-
-            XDocument xDoc = GetGamesDBInfo(title);
-
             QueryTooLong = false; 
             List<SelectListItem> Games = new List<SelectListItem>();
             List<SelectListItem> PlatformList = new List<SelectListItem>();
             List<string> platforms = new List<string>();
 
-            var query = from g in xDoc.Descendants("Game")
+            var query = from g in XDoc.Descendants("Game")
                         where g.Element("GameTitle").Value.ToLower().Contains(title.ToLower()) &&
                         (g.Element("Platform").Value == platform || string.IsNullOrEmpty(platform))
                         select new
@@ -117,8 +126,7 @@ namespace GameTrade.ViewModels
                     });
                 }
             }
-
-            return Games;          
+            return Games;
         }
 
         private int GetPlatformId(string platformName, GameTradeDbContext context)
@@ -142,27 +150,13 @@ namespace GameTrade.ViewModels
             }
         }
 
-            private XDocument GetGamesDBInfo(string title)
+            private XDocument GetGamesDBInfo(string title, string searchParam1, string searchParam2)
             {
-                WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/GetGamesList.php?name=" + title);
-
-                //might be able to move this bit to avoid repetition
-
+            WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/" + searchParam1 + ".php?" + searchParam2 + "=" + title);
                 WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
                 XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
                 return gamesdbXdoc;
-            }
-
-            private XDocument GetGameDBInfoById(int id)
-            {
-                WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/GetGame.php?id=" + id);
-                WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
-                XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
-                return gamesdbXdoc;
-            }
-
-
-        
+            }       
     }
 }
 

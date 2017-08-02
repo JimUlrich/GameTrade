@@ -45,6 +45,7 @@ namespace GameTrade.Models
             ConditionId = viewModel.ConditionId;
             UserId = viewModel.UserId;
             DesignationId = viewModel.DesignationId;
+            GenreId = viewModel.GenreId;
         }
 
         public Game() { }
@@ -58,6 +59,7 @@ namespace GameTrade.Models
             Description = viewModel.Description;
             ConditionId = viewModel.ConditionId;
             DesignationId = viewModel.DesignationId;
+            GenreId = viewModel.GenreId;
         }
 
         public int CompareTo(Game that)
