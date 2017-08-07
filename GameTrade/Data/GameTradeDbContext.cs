@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using GameTrade.Models;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace GameTrade.Data
 {
@@ -15,6 +16,7 @@ namespace GameTrade.Data
         public DbSet<Condition> Conditions { get; set; }
         public DbSet<Designation> Designations { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<GameGenre> GameGenres { get; set; }
 
 
         public GameTradeDbContext(DbContextOptions<GameTradeDbContext> options)
@@ -25,9 +27,18 @@ namespace GameTrade.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+            builder.Entity<GameGenre>()
+                 .HasKey(g => new { g.GameId, g.GenreId });
+
+            
+
+            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
         }
     }
 }
+
+//TODO: fix migration update errors

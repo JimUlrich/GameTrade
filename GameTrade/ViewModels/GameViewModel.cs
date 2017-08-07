@@ -32,14 +32,12 @@ namespace GameTrade.ViewModels
         [Display(Name = "Buy/Sell")]
         public int DesignationId { get; set; }
 
-        [Display(Name = "Genre")]
-        public int GenreId { get; set; }
-
         public int GameID { get; set; }
         public string GamesdbID { get; set; }
         public string Description { get; set; }
         public Game Game { get; set; }
         public string UserId { get; set; }
+        public List<int> GenreIds { get; set; }
 
         public GameViewModel() { }
 

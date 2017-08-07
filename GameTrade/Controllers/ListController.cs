@@ -45,15 +45,6 @@ namespace GameTrade.Controllers
         [Authorize]
         public IActionResult Add()
         {
-            List<Platform> platforms = context.Platforms.ToList();
-            ViewBag.Platforms = platforms;
-            List<Condition> conditions = context.Conditions.ToList();
-            ViewBag.Conditions = conditions;
-            List<Designation> designations = context.Designations.ToList();
-            ViewBag.Designations = designations;
-            List<Genre> genres = context.Genres.ToList();
-            ViewBag.Genres = genres;
-
             AddGameViewModel addGameViewModel = new AddGameViewModel(context);
             return View(addGameViewModel);
         }
@@ -73,14 +64,8 @@ namespace GameTrade.Controllers
                 return Redirect("/List?m=Game Successfully Added");
             }
 
-            List<Platform> platforms = context.Platforms.ToList();
-            ViewBag.Platforms = platforms;
-            List<Condition> conditions = context.Conditions.ToList();
-            ViewBag.Conditions = conditions;
-            List<Designation> designations = context.Designations.ToList();
-            ViewBag.Designations = designations;
-
-            return View(addGameViewModel);
+            AddGameViewModel newAddGameViewModel = new AddGameViewModel(context);
+            return View(newAddGameViewModel);
         }
 
         [Authorize]
@@ -128,7 +113,6 @@ namespace GameTrade.Controllers
             foreach (int gameId in gameIds)
             {
                 Game thegame = context.Games.Single(g => g.GameId == gameId);
-                var newgame = thegame.GetType().GetProperty("Platform").GetValue(thegame);
                 context.Games.Remove(thegame);
             }
 
@@ -181,42 +165,11 @@ namespace GameTrade.Controllers
             Tuple<IEnumerable<Game>, string> tuple = new Tuple<IEnumerable<Game>, string>(sortedQuery, userId);
             return View(tuple); 
         }
-
-        public IActionResult AddPlatform(string platformToQuery)
-        {
-            List<Platform> platforms = context.Platforms.ToList();
-
-
-            List<string> platformNames = new List<string>();
-
-            foreach (var platform in platforms)
-            {
-                platformNames.Add(platform.Name);
-            }
-
-            if (!platformNames.Contains(platformToQuery))
-            {
-                Platform newPlatform = new Platform
-                {
-                    Name = platformToQuery
-                };
-
-                context.Platforms.Add(newPlatform);
-                context.SaveChanges();
-            }
-
-            return View();
-        }
-        
-
     }
-
-
-
 }
     
-
-        //TODO: VIEW  only
+        //TODO: make list of genreids into a string and then split the string to get the ids
+        //TODO: VIEW  only certain categories
         
        
         

@@ -9,7 +9,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using GameTrade.Data;
-
+using System.Reflection;
+using System.Collections;
 
 namespace GameTrade.ViewModels
 {
@@ -18,7 +19,7 @@ namespace GameTrade.ViewModels
         public bool QueryTooLong { get; set; }
         public string PlatformName { get; set; }
         public string GenreName { get; set; }
-        public List<SelectListItem> Games { get; set; }
+        public List<SelectListItem> Games { get; set; }     
         public string GameList { get; set; }
 
         [Display(Name = "Please select a game")]
@@ -47,26 +48,52 @@ namespace GameTrade.ViewModels
             string gameid = id.ToString();
             List<string> gameData = new List<string>();
             XDocument xDoc = GetGamesDBInfo(gameid, "GetGame", "id");
-            
+
+            var query = GameQuery(xDoc, gameid);
+            var genreQuery = GenreQuery(xDoc);
+
+            foreach (var item in query)
+            {
+                Title = item.GetType().GetProperty("title").GetValue(item).ToString();
+                var getPlatform = item.GetType().GetProperty("platform").GetValue(item).ToString();
+                PlatformId = GetPropId(getPlatform, context, "Platforms");
+                PlatformName = getPlatform;
+                var getYear = item.GetType().GetProperty("year").GetValue(item).ToString();
+                Year = getYear.Substring(getYear.Length - 4);    
+            }
+           
+            List<int> genres = new List<int>();
+
+            foreach (string item in genreQuery)
+            {
+                int genreId = GetPropId(item, context, "Genres");
+                genres.Add(genreId);
+            }
+
+            GenreIds = genres;
+            GameId = id;       
+        }
+
+        private IEnumerable GameQuery(XDocument xDoc, string gameid)
+        {
             var query = from g in xDoc.Descendants("Game")
                         where g.Element("id").Value == gameid
                         select new
                         {
                             title = g.Element("GameTitle").Value,
                             platform = g.Element("Platform").Value,
-                            year = g.Element("ReleaseDate").Value,
-                          //  genre = g.Element("genre").Value,
+                            year = g.Element("ReleaseDate").Value
                         };
-            foreach (var item in query)
-            {
-                Title = item.title;
-                PlatformId = GetPlatformId(item.platform, context);
-                Year = item.year.Substring(item.year.Length - 4);
-                PlatformName = item.platform;
-              //  GenreName = item.genre;
-            }
-            GameId = id;
-            
+            return query;
+        }
+
+        private IEnumerable GenreQuery(XDocument xDoc)
+        {
+            var genreQuery = xDoc.Descendants("Genres").
+                             Elements("genre").
+                             Select(g => g.Value).
+                             ToList();
+            return genreQuery;
         }
 
         private List<SelectListItem> GetGamesList(string title, XDocument XDoc, string platform = null )
@@ -129,34 +156,50 @@ namespace GameTrade.ViewModels
             return Games;
         }
 
-        private int GetPlatformId(string platformName, GameTradeDbContext context)
-        {
+        private int GetPropId(string propName, GameTradeDbContext context, string dbSetType)
+        { 
             try
             {
-                Platform platform = context.Platforms.Single(p => p.Name == platformName);
-                int platformId = platform.Id;
-                return platformId;
+                var dbSet = GetDbSet(context, dbSetType);
+                var query = dbSet.Single(g => g.GetType().GetProperty("Name").GetValue(g).ToString() == propName);
+                var itemId = query.GetType().GetProperty("Id").GetValue(query).ToString();
+                return Int32.Parse(itemId);
             }
             catch (InvalidOperationException)
             {
-                Platform newPlatform = new Platform
+                if (dbSetType == "Platforms")
                 {
-                    Name = platformName
-                };
-                context.Platforms.Add(newPlatform);
-                context.SaveChanges();
+                    Platform newPlatform = new Platform
+                    {
+                        Name = propName
+                    };
+                    context.Platforms.Add(newPlatform);
+                    context.SaveChanges();
 
-                return newPlatform.Id;
+                    return newPlatform.Id;
+                }
+                
+                else
+                {
+                    Genre newGenre = new Genre
+                    {
+                        Name = propName
+                    };
+                    context.Genres.Add(newGenre);
+                    context.SaveChanges();
+
+                    return newGenre.Id;
+                }
             }
         }
 
-            private XDocument GetGamesDBInfo(string title, string searchParam1, string searchParam2)
-            {
+        private XDocument GetGamesDBInfo(string title, string searchParam1, string searchParam2)
+        {
             WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/" + searchParam1 + ".php?" + searchParam2 + "=" + title);
-                WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
-                XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
-                return gamesdbXdoc;
-            }       
+            WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
+            XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
+            return gamesdbXdoc;
+        }       
     }
 }
 

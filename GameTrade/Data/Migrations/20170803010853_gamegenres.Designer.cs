@@ -8,9 +8,10 @@ using GameTrade.Data;
 namespace GameTrade.Data.Migrations
 {
     [DbContext(typeof(GameTradeDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170803010853_gamegenres")]
+    partial class gamegenres
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")

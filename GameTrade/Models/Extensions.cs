@@ -49,44 +49,5 @@ namespace GameTrade.Models
                 return query;
             }
         }
-
-        public static void AddPlatform(GameTradeDbContext context, string platformToQuery)
-        {
-            List<Platform> platforms = context.Platforms.ToList();
-            List<string> platformNames = new List<string>();
-
-            foreach (var platform in platforms)
-            {
-                platformNames.Add(platform.Name);
-            }
-
-            if (!platformNames.Contains(platformToQuery))
-            {
-                Platform newPlatform = new Platform
-                {
-                    Name = platformToQuery
-                };
-
-                context.Platforms.Add(newPlatform);
-                context.SaveChanges();
-            }
-        }
-
-        public static List<string> CreatePlatformList(GameTradeDbContext context)
-        {
-            List<Platform> platforms = context.Platforms.ToList();
-            List<string> platformNames = new List<string>();
-
-            foreach (var platform in platforms)
-            {
-                platformNames.Add(platform.Name);
-            }
-
-            return platformNames;
-        }
-
-       
-
-
     }
 }

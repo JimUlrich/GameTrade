@@ -45,7 +45,10 @@ namespace GameTrade.Models
             ConditionId = viewModel.ConditionId;
             UserId = viewModel.UserId;
             DesignationId = viewModel.DesignationId;
-            GenreId = viewModel.GenreId;
+            foreach (int id in viewModel.GenreIds)
+            {
+                GenreId = id;
+            }
         }
 
         public Game() { }
@@ -59,7 +62,10 @@ namespace GameTrade.Models
             Description = viewModel.Description;
             ConditionId = viewModel.ConditionId;
             DesignationId = viewModel.DesignationId;
-            GenreId = viewModel.GenreId;
+            foreach (int id in viewModel.GenreIds)
+            {
+                GenreId = id;
+            }
         }
 
         public int CompareTo(Game that)

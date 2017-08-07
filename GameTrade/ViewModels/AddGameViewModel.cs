@@ -24,6 +24,7 @@ namespace GameTrade.ViewModels
         public List<SelectListItem> Genres { get; set; }
 
         public AddGameViewModel() { }
+      
 
         public AddGameViewModel(GameTradeDbContext context)
         {
@@ -32,10 +33,10 @@ namespace GameTrade.ViewModels
             Designations = BuildSelectListItem(GetDbSet(context, "Designations"));
         }
        
-        internal IEnumerable GetDbSet(GameTradeDbContext context, string dbSet)
+        internal IEnumerable<Object> GetDbSet(GameTradeDbContext context, string dbSet)
         {
             var newDbSet = context.GetType().GetProperty(dbSet);
-            return (IEnumerable)newDbSet.GetValue(context);
+            return (IEnumerable<Object>)newDbSet.GetValue(context);
         }
 
         private List<SelectListItem> BuildSelectListItem(IEnumerable dbSet)
