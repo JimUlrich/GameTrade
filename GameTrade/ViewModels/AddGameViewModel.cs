@@ -54,4 +54,4 @@ namespace GameTrade.ViewModels
             return newList;
         }
     }
-}
+}//TODO: implement multiple genre adds
