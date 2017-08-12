@@ -21,16 +21,17 @@ namespace GameTrade.ViewModels
         public List<SelectListItem> Conditions { get; set; }
         public List<SelectListItem> Designations { get; set; }
         public List<SelectListItem> Platforms { get; set; }
-        public List<SelectListItem> Genres { get; set; }
+        public List<SelectListItem> Genres { get; set; }    
 
-        public AddGameViewModel() { }
-      
+        public AddGameViewModel() { }     
 
-        public AddGameViewModel(GameTradeDbContext context)
+        public AddGameViewModel(GameTradeDbContext context, string genreIds = "1,2,3")
         {
             Platforms = BuildSelectListItem(GetDbSet(context, "Platforms"));
             Conditions = BuildSelectListItem(GetDbSet(context, "Conditions"));
             Designations = BuildSelectListItem(GetDbSet(context, "Designations"));
+            Genres = BuildSelectListItem(GetDbSet(context, "Genres"));
+            GenreIds = BuildGenres(context, genreIds);
         }
        
         internal IEnumerable<Object> GetDbSet(GameTradeDbContext context, string dbSet)
@@ -53,5 +54,11 @@ namespace GameTrade.ViewModels
             }
             return newList;
         }
+
+
+
+        
+
+        
     }
 }//TODO: implement multiple genre adds

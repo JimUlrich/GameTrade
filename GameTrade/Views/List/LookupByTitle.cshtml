@@ -25,19 +25,19 @@
                             asp-items="@Model.Platforms"></select>
                 </div>
             </div>
-           
+
         }
 
         if (Model.Games == null && Model.GameId == 0)
         {
             Html.RenderPartial("_LookupPartial1.cshtml");
-            
+
         }
 
         if (Model.Games != null && Model.Games.Count() != 0)
         {
             Html.RenderPartial("_LookupPartial0.cshtml");
-            
+
 
         }
 
@@ -45,6 +45,7 @@
         {
             Html.RenderPartial("_FormPartial3");
 
+            <input type="hidden" asp-for="GenreIds" value="@Model.GenreIds" />
         }
     }
 

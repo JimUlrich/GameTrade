@@ -64,7 +64,8 @@ namespace GameTrade.Controllers
                 return Redirect("/List?m=Game Successfully Added");
             }
 
-            AddGameViewModel newAddGameViewModel = new AddGameViewModel(context);
+            string genreIds = addGameViewModel.GenreIds;
+            AddGameViewModel newAddGameViewModel = new AddGameViewModel(context, genreIds);
             return View(newAddGameViewModel);
         }
 

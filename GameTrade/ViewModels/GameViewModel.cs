@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameTrade.Models;
 using System.ComponentModel.DataAnnotations;
+using GameTrade.Data;
+using System.Reflection;
 
 namespace GameTrade.ViewModels
 {
@@ -32,12 +34,14 @@ namespace GameTrade.ViewModels
         [Display(Name = "Buy/Sell")]
         public int DesignationId { get; set; }
 
+        [Required]
+        [Display(Name = "Genre(s)")]
+        public string GenreIds { get; set; }
+
         public int GameID { get; set; }
-        public string GamesdbID { get; set; }
         public string Description { get; set; }
         public Game Game { get; set; }
         public string UserId { get; set; }
-        public List<int> GenreIds { get; set; }
 
         public GameViewModel() { }
 
@@ -46,7 +50,37 @@ namespace GameTrade.ViewModels
             Game = game;
         }
 
+        internal string[] SplitGenreIds(string genreIds)
+        {
+            String[] genres = genreIds.Split(',');
+            return genres;
+        }
 
+        internal string IntToGenreName(GameTradeDbContext context, string[] genreIdsSplit, int i)
+        {
+            Genre genreQuery = context.Genres.Where(g => g.Id == Int32.Parse(genreIdsSplit[i])).First();
+            string genre = genreQuery.GetType().GetProperty("Name").GetValue(genreQuery).ToString();
+            return genre;
+        }
+
+        internal string BuildGenres(GameTradeDbContext context, string genreIds = null)
+        {
+            string genres = "";
+            string[] genreIdsSplit = SplitGenreIds(genreIds);
+            for (int i = 0; i < genreIdsSplit.Length; i++)
+            {
+                if (i < (genreIdsSplit.Length - 1))
+                {
+                    string genre = IntToGenreName(context, genreIdsSplit, i);
+                    genres += genre + ", ";
+                }
+                else
+                {
+                    genres += IntToGenreName(context, genreIdsSplit, i);
+                }
+            }
+            return genres;
+        }
     }
 }
 

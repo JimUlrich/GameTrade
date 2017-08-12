@@ -11,14 +11,16 @@ using System.Xml.Linq;
 using GameTrade.Data;
 using System.Reflection;
 using System.Collections;
+using System.Text;
 
 namespace GameTrade.ViewModels
 {
     public class LookupByTitleViewModel : AddGameViewModel
     {
-        public bool QueryTooLong { get; set; }
+        [Display(Name = "Platform")]
         public string PlatformName { get; set; }
-        public string GenreName { get; set; }
+
+        public bool QueryTooLong { get; set; }
         public List<SelectListItem> Games { get; set; }     
         public string GameList { get; set; }
 
@@ -51,7 +53,7 @@ namespace GameTrade.ViewModels
 
             var query = GameQuery(xDoc, gameid);
             var genreQuery = GenreQuery(xDoc);
-
+            
             foreach (var item in query)
             {
                 Title = item.GetType().GetProperty("title").GetValue(item).ToString();
@@ -62,18 +64,27 @@ namespace GameTrade.ViewModels
                 Year = getYear.Substring(getYear.Length - 4);    
             }
            
-            List<int> genres = new List<int>();
+            StringBuilder genres = new StringBuilder();
 
-            foreach (string item in genreQuery)
+            for (int i = 0; i < genreQuery.Count; i++ )
             {
-                int genreId = GetPropId(item, context, "Genres");
-                genres.Add(genreId);
+                if (i < (genreQuery.Count - 1))
+                {
+                    int genreId = GetPropId(genreQuery[i], context, "Genres");
+                    genres.Append(genreId + ",");
+                }
+                else
+                {
+                    int genreId = GetPropId(genreQuery[i], context, "Genres");
+                    genres.Append(genreId);
+                }
             }
 
-            GenreIds = genres;
+            GenreIds = genres.ToString();
             GameId = id;       
         }
 
+        // query xdoc for title, platform and year attributes
         private IEnumerable GameQuery(XDocument xDoc, string gameid)
         {
             var query = from g in xDoc.Descendants("Game")
@@ -87,7 +98,8 @@ namespace GameTrade.ViewModels
             return query;
         }
 
-        private IEnumerable GenreQuery(XDocument xDoc)
+
+        private List<string> GenreQuery(XDocument xDoc)
         {
             var genreQuery = xDoc.Descendants("Genres").
                              Elements("genre").
@@ -199,9 +211,11 @@ namespace GameTrade.ViewModels
             WebResponse gamesdbResponse = gamesdbRequest.GetResponseAsync().Result;
             XDocument gamesdbXdoc = XDocument.Load(gamesdbResponse.GetResponseStream());
             return gamesdbXdoc;
-        }       
+        }
     }
 }
+//TODO: REMOVE TITLE FROM PLATFORM LOOKUP VIEW
+//TODO: GENREIDSTRING NEEDS TO RETURN A STRING OF IDS, NOT THE OBJECT TYPE
 
 
 
