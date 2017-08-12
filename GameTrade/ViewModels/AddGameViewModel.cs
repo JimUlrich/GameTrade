@@ -25,19 +25,17 @@ namespace GameTrade.ViewModels
 
         public AddGameViewModel() { }     
 
-        public AddGameViewModel(GameTradeDbContext context, string genreIds = "1,2,3")
+        public AddGameViewModel(GameTradeDbContext context, string genreIds = null)
         {
-            Platforms = BuildSelectListItem(GetDbSet(context, "Platforms"));
-            Conditions = BuildSelectListItem(GetDbSet(context, "Conditions"));
-            Designations = BuildSelectListItem(GetDbSet(context, "Designations"));
-            Genres = BuildSelectListItem(GetDbSet(context, "Genres"));
-            GenreIds = BuildGenres(context, genreIds);
-        }
-       
-        internal IEnumerable<Object> GetDbSet(GameTradeDbContext context, string dbSet)
-        {
-            var newDbSet = context.GetType().GetProperty(dbSet);
-            return (IEnumerable<Object>)newDbSet.GetValue(context);
+            Platforms = BuildSelectListItem(Models.Extensions.GetDbSet(context, "Platforms"));
+            Conditions = BuildSelectListItem(Models.Extensions.GetDbSet(context, "Conditions"));
+            Designations = BuildSelectListItem(Models.Extensions.GetDbSet(context, "Designations"));
+            Genres = BuildSelectListItem(Models.Extensions.GetDbSet(context, "Genres"));
+            if (genreIds != null)
+            {
+                GenreNames = BuildGenres(context, genreIds);
+                GenreIds = genreIds;
+            }
         }
 
         private List<SelectListItem> BuildSelectListItem(IEnumerable dbSet)

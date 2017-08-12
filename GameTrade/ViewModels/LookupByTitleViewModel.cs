@@ -58,7 +58,7 @@ namespace GameTrade.ViewModels
             {
                 Title = item.GetType().GetProperty("title").GetValue(item).ToString();
                 var getPlatform = item.GetType().GetProperty("platform").GetValue(item).ToString();
-                PlatformId = GetPropId(getPlatform, context, "Platforms");
+                PlatformId = Models.Extensions.GetPropId(getPlatform, context, "Platforms");
                 PlatformName = getPlatform;
                 var getYear = item.GetType().GetProperty("year").GetValue(item).ToString();
                 Year = getYear.Substring(getYear.Length - 4);    
@@ -70,12 +70,12 @@ namespace GameTrade.ViewModels
             {
                 if (i < (genreQuery.Count - 1))
                 {
-                    int genreId = GetPropId(genreQuery[i], context, "Genres");
+                    int genreId = Models.Extensions.GetPropId(genreQuery[i], context, "Genres");
                     genres.Append(genreId + ",");
                 }
                 else
                 {
-                    int genreId = GetPropId(genreQuery[i], context, "Genres");
+                    int genreId = Models.Extensions.GetPropId(genreQuery[i], context, "Genres");
                     genres.Append(genreId);
                 }
             }
@@ -168,43 +168,6 @@ namespace GameTrade.ViewModels
             return Games;
         }
 
-        private int GetPropId(string propName, GameTradeDbContext context, string dbSetType)
-        { 
-            try
-            {
-                var dbSet = GetDbSet(context, dbSetType);
-                var query = dbSet.Single(g => g.GetType().GetProperty("Name").GetValue(g).ToString() == propName);
-                var itemId = query.GetType().GetProperty("Id").GetValue(query).ToString();
-                return Int32.Parse(itemId);
-            }
-            catch (InvalidOperationException)
-            {
-                if (dbSetType == "Platforms")
-                {
-                    Platform newPlatform = new Platform
-                    {
-                        Name = propName
-                    };
-                    context.Platforms.Add(newPlatform);
-                    context.SaveChanges();
-
-                    return newPlatform.Id;
-                }
-                
-                else
-                {
-                    Genre newGenre = new Genre
-                    {
-                        Name = propName
-                    };
-                    context.Genres.Add(newGenre);
-                    context.SaveChanges();
-
-                    return newGenre.Id;
-                }
-            }
-        }
-
         private XDocument GetGamesDBInfo(string title, string searchParam1, string searchParam2)
         {
             WebRequest gamesdbRequest = WebRequest.Create("http://thegamesdb.net/api/" + searchParam1 + ".php?" + searchParam2 + "=" + title);
@@ -215,7 +178,7 @@ namespace GameTrade.ViewModels
     }
 }
 //TODO: REMOVE TITLE FROM PLATFORM LOOKUP VIEW
-//TODO: GENREIDSTRING NEEDS TO RETURN A STRING OF IDS, NOT THE OBJECT TYPE
+
 
 
 

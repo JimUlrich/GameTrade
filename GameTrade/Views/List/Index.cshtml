@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GameTrade.Models.Game>
+﻿@model GameTrade.ViewModels.ListViewModel
 
 @{
     ViewData["Title"] = "My List";
@@ -13,6 +13,7 @@
         <th>Title</th>
         <th>Platform</th>
         <th>Year Released</th>
+        <th>Genre(s)</th>
         <th>Condition</th>
         <th>Value</th>
         <th> </th>
@@ -20,12 +21,18 @@
 
     </tr>
 
-    @foreach (var game in Model)
+    @foreach (var game in Model.Games)
     {
         <tr>
             <td>@game.Title</td>
             <td>@game.Platform.Name</td>
             <td>@game.Year</td>
+            @{string genres = "";
+                foreach (var item in Model.GameGenres.Where(g => g.GameId == game.GameId))
+                {
+                    genres += item.Genre.Name + ", "; 
+                };
+                }<td>@genres</td>
             <td>@game.Condition.Name</td>
             <td>$@game.Value</td>
 

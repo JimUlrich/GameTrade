@@ -19,9 +19,6 @@ namespace GameTrade.Models
      
         public string UserId { get; set; }
 
-        public Genre Genre { get; set; }
-        public int GenreId { get; set; }
-
         public Platform Platform { get; set; }
         public int PlatformId { get; set; }
 
@@ -45,10 +42,7 @@ namespace GameTrade.Models
             ConditionId = viewModel.ConditionId;
             UserId = viewModel.UserId;
             DesignationId = viewModel.DesignationId;
-            foreach (int id in viewModel.GenreIds)
-            {
-                GenreId = id;
-            }
+          
         }
 
         public Game() { }
@@ -62,15 +56,15 @@ namespace GameTrade.Models
             Description = viewModel.Description;
             ConditionId = viewModel.ConditionId;
             DesignationId = viewModel.DesignationId;
-            foreach (int id in viewModel.GenreIds)
-            {
-                GenreId = id;
-            }
+        
         }
 
         public int CompareTo(Game that)
         {
             return Platform.Name.CompareTo(that.Platform.Name);
         }
+
+         
+       
     }
 }

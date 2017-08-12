@@ -32,14 +32,9 @@ namespace GameTrade.Controllers
         {
             ViewBag.Message = m;
             string userId = Models.Extensions.GetUserID(User);
-
-            IEnumerable<Game> query = context.Games.Where(g => g.UserId == userId)
-                                      .Include(g => g.Platform)
-                                      .Include(g => g.Condition)
-                                      .Include(g => g.Designation);
-            
-                        
-            return View(query);
+            ListViewModel newListViewModel =  new ListViewModel(context, userId);
+             
+            return View(newListViewModel);
         }
 
         [Authorize]
@@ -57,9 +52,11 @@ namespace GameTrade.Controllers
             {
                 Game newGame = new Game(addGameViewModel);
                 newGame.UserId = Models.Extensions.GetUserID(User);
-
                 context.Games.Add(newGame);
                 context.SaveChanges();
+                string genres = addGameViewModel.GenreNames;
+                int gameId = newGame.GameId;
+                Models.Extensions.AddGenres(context, gameId, genres);
 
                 return Redirect("/List?m=Game Successfully Added");
             }

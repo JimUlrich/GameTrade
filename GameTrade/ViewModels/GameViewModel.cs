@@ -25,7 +25,7 @@ namespace GameTrade.ViewModels
         [Required]
         [Range(0.01, 1000)]
         public decimal Value { get; set; }
-   
+
         [Required]
         [Display(Name = "Condition")]
         public int ConditionId { get; set; }
@@ -36,24 +36,19 @@ namespace GameTrade.ViewModels
 
         [Required]
         [Display(Name = "Genre(s)")]
-        public string GenreIds { get; set; }
+        public string GenreNames { get; set; }
 
         public int GameID { get; set; }
         public string Description { get; set; }
         public Game Game { get; set; }
         public string UserId { get; set; }
+        public string GenreIds { get; set; }
 
         public GameViewModel() { }
 
         public GameViewModel(Game game)
         {
             Game = game;
-        }
-
-        internal string[] SplitGenreIds(string genreIds)
-        {
-            String[] genres = genreIds.Split(',');
-            return genres;
         }
 
         internal string IntToGenreName(GameTradeDbContext context, string[] genreIdsSplit, int i)
@@ -66,7 +61,7 @@ namespace GameTrade.ViewModels
         internal string BuildGenres(GameTradeDbContext context, string genreIds = null)
         {
             string genres = "";
-            string[] genreIdsSplit = SplitGenreIds(genreIds);
+            string[] genreIdsSplit = Models.Extensions.SplitGenreIds(genreIds);
             for (int i = 0; i < genreIdsSplit.Length; i++)
             {
                 if (i < (genreIdsSplit.Length - 1))
@@ -81,6 +76,8 @@ namespace GameTrade.ViewModels
             }
             return genres;
         }
+
+        
     }
 }
 
